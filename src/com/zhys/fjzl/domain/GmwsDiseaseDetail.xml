@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+智能导诊疾病检查关系表
+User: Created by auto build
+Date: 2017-07-31 16:30:02
+-->
+<sqlMap namespace="gmws_disease_detail">
+
+    <typeAlias alias="gmws_disease_detail" type="com.zhys.fjzl.domain.GmwsDiseaseDetail" />
+
+    <!--智能导诊疾病检查关系表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--智能导诊检查id等于-->
+            <isNotEmpty prepend="and" property="id_">
+                <![CDATA[ id_ = #id_# ]]>
+            </isNotEmpty>
+            <!--智能导诊疾病id等于-->
+            <isNotEmpty prepend="and" property="dis_id_">
+                <![CDATA[ dis_id_ = #dis_id_# ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="order_">
+                <![CDATA[ order_ = #order_# ]]>
+            </isNotEmpty>
+            <!---->
+            <isNotEmpty prepend="and" property="data_">
+                <![CDATA[ instr(data_, #data_#) > 0 ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="data_type_">
+                <![CDATA[ data_type_ = #data_type_# ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="main_id">
+                <![CDATA[ main_id = #main_id# ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="xbid">
+                <![CDATA[ xbid = #xbid# ]]>
+            </isNotEmpty>
+            <!---->
+            <isNotEmpty prepend="and" property="dxid">
+                <![CDATA[ instr(dxid, #dxid#) > 0 ]]>
+            </isNotEmpty>
+            <!---->
+            <isNotEmpty prepend="and" property="symbol_">
+                <![CDATA[ instr(symbol_, #symbol_#) > 0 ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id_ in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--智能导诊疾病检查关系表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from gmws_disease_detail
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--智能导诊疾病检查关系表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="gmws_disease_detail">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id_,
+                dis_id_,
+                order_,
+                data_,
+                data_type_,
+                main_id,
+                xbid,
+                dxid,
+                symbol_
+            from gmws_disease_detail
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建智能导诊疾病检查关系表-->
+    <insert id="create" parameterClass="gmws_disease_detail">
+        <![CDATA[
+            insert into gmws_disease_detail(
+                id_,
+                dis_id_,
+                order_,
+                data_,
+                data_type_,
+                main_id,
+                xbid,
+                dxid,
+                symbol_
+            ) values (
+                #id_:NUMERIC#,
+                #dis_id_:NUMERIC#,
+                #order_:NUMERIC#,
+                #data_:VARCHAR#,
+                #data_type_:NUMERIC#,
+                #main_id:NUMERIC#,
+                #xbid:NUMERIC#,
+                #dxid:VARCHAR#,
+                #symbol_:VARCHAR#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id_" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id_
+        </selectKey>
+    </insert>
+
+    <!--更新智能导诊疾病检查关系表-->
+    <update id="update" parameterClass="gmws_disease_detail">
+        <![CDATA[ update gmws_disease_detail ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.id_">
+                <![CDATA[ id_ = #id_:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.dis_id_">
+                <![CDATA[ dis_id_ = #dis_id_:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.order_">
+                <![CDATA[ order_ = #order_:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.data_">
+                <![CDATA[ data_ = #data_:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.data_type_">
+                <![CDATA[ data_type_ = #data_type_:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.main_id">
+                <![CDATA[ main_id = #main_id:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.xbid">
+                <![CDATA[ xbid = #xbid:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.dxid">
+                <![CDATA[ dxid = #dxid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.symbol_">
+                <![CDATA[ symbol_ = #symbol_:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id_ = #id_#  ]]>
+    </update>
+
+    <!--删除智能导诊疾病检查关系表-->
+    <delete id="delete" parameterClass="gmws_disease_detail">
+        <![CDATA[
+            delete from gmws_disease_detail where id_ = #id_#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+
+User: Created by auto build
+Date: 2017-06-20 08:37:18
+-->
+<sqlMap namespace="fjzl_record_unmatch_items">
+
+    <typeAlias alias="fjzl_record_unmatch_items" type="com.zhys.fjzl.domain.RecordUnmatchItem" />
+
+    <!--分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--主键最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--主键等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+            <!--主键最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构编码-->
+            <isNotEmpty prepend="and" property="orgid">
+                <![CDATA[ instr(orgid, #orgid#) > 0 ]]>
+            </isNotEmpty>
+            <!--记录id最小值-->
+            <isNotEmpty prepend="and" property="recordid_min">
+                <![CDATA[ recordid >= #recordid_min# ]]>
+            </isNotEmpty>
+            <!--记录id等于-->
+            <isNotEmpty prepend="and" property="recordid">
+                <![CDATA[ recordid = #recordid# ]]>
+            </isNotEmpty>
+            <!--记录id最大值-->
+            <isNotEmpty prepend="and" property="recordid_max">
+                <![CDATA[ recordid <= #recordid_max# ]]>
+            </isNotEmpty>
+            <!--检测不通过项id-->
+            <isNotEmpty prepend="and" property="illegalid">
+                <![CDATA[ instr(illegalid, #illegalid#) > 0 ]]>
+            </isNotEmpty>
+            <!--1疾病 2药品 3检查最小值-->
+            <isNotEmpty prepend="and" property="illegatype_min">
+                <![CDATA[ illegatype >= #illegatype_min# ]]>
+            </isNotEmpty>
+            <!--1疾病 2药品 3检查等于-->
+            <isNotEmpty prepend="and" property="illegatype">
+                <![CDATA[ illegatype = #illegatype# ]]>
+            </isNotEmpty>
+            <!--1疾病 2药品 3检查最大值-->
+            <isNotEmpty prepend="and" property="illegatype_max">
+                <![CDATA[ illegatype <= #illegatype_max# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="createtime_begin">
+                <![CDATA[ createtime >= str_to_date(#createtime_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="createtime_end">
+                <![CDATA[ createtime <= str_to_date('$createtime_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from fjzl_record_unmatch_items
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="fjzl_record_unmatch_items">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                orgid,
+                recordid,
+                illegalid,
+                illegatype,
+                createtime
+            from fjzl_record_unmatch_items
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建-->
+    <insert id="create" parameterClass="fjzl_record_unmatch_items">
+        <![CDATA[
+            insert into fjzl_record_unmatch_items(
+                orgid,
+                recordid,
+                illegalid,
+                illegalName,
+                illegatype,
+                createtime
+            ) values (
+                #orgid:VARCHAR#,
+                #recordid:NUMERIC#,
+                #illegalid:VARCHAR#,
+                #illegalName:VARCHAR#,
+                #illegatype:NUMERIC#,
+                #createtime:TIMESTAMP#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新-->
+    <update id="update" parameterClass="fjzl_record_unmatch_items">
+        <![CDATA[ update fjzl_record_unmatch_items ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.orgid">
+                <![CDATA[ orgid = #orgid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.recordid">
+                <![CDATA[ recordid = #recordid:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.illegalid">
+                <![CDATA[ illegalid = #illegalid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.illegatype">
+                <![CDATA[ illegatype = #illegatype:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.createtime">
+                <![CDATA[ createtime = #createtime:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除-->
+    <delete id="delete" parameterClass="fjzl_record_unmatch_items">
+        <![CDATA[
+            delete from fjzl_record_unmatch_items where id = #id#
+        ]]>
+    </delete>
+
+</sqlMap>

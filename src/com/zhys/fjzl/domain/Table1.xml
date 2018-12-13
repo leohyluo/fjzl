@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+新建表
+User: Created by auto build
+Date: 2016-10-10 16:23:28
+-->
+<sqlMap namespace="table1">
+
+    <typeAlias alias="table1" type="com.zhys.fjzl.domain.Table1" />
+
+    <!--新建表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--编码最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--编码等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+            <!--编码最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--名称-->
+            <isNotEmpty prepend="and" property="name">
+                <![CDATA[ instr(name, #name#) > 0 ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--新建表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from table1
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--新建表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="table1">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                name
+            from table1
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建新建表-->
+    <insert id="create" parameterClass="table1">
+        <![CDATA[
+            insert into table1(
+                name
+            ) values (
+                #name:VARCHAR#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新新建表-->
+    <update id="update" parameterClass="table1">
+        <![CDATA[ update table1 ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.name">
+                <![CDATA[ name = #name:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除新建表-->
+    <delete id="delete" parameterClass="table1">
+        <![CDATA[
+            delete from table1 where id = #id#
+        ]]>
+    </delete>
+
+</sqlMap>

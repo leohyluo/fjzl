@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+ 
+    <!-- spring扫描器，自动扫描载入类上的spring组件注解  -->
+    <context:component-scan base-package="com.zhys">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+
+    <!-- 处理在类级别上的@RequestMapping注解 -->
+    <bean id="coreHandlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <!-- 拦截器 -->
+        <property name="interceptors">
+            <list>
+                <ref bean="rightAdvice"/>
+                <ref bean="apiInterceptor"/>
+                <ref bean="unmatchItem4HisInterceptor"/>
+                <ref bean="reportInterceptor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--支持多视图的解析器-->
+    <bean id="multiViewResolver" class="com.zhys.core.controller.MultiViewResolver">
+        <property name="order" value="0"/>
+    </bean>
+
+	<bean id="apiInterceptor" class="com.zhys.fjzl.interceptor.ApiInterceptor">
+		<property name="mappingURL" value="/api/getUnmatchItems" />
+		<property name="orgService" ref="sysOrgService" />
+	</bean>
+	<!-- 不经过智能诊断调用分级诊疗的拦截器 -->
+	<bean id="unmatchItem4HisInterceptor" class="com.zhys.fjzl.interceptor.UnmatchItem4HisInterceptor">
+		<property name="mappingURL" value="/api/getIllegalItemsForHis" />
+		<property name="orgService" ref="sysOrgService" />
+		<property name="diseaseMapperService" ref="DiseaseMapperService" />
+		<property name="gmwsDiseaseDetailService" ref="GmwsDiseaseDetailService" />
+		<property name="gmwsDiseaseDrugService" ref="GmwsDiseaseDrugService" />
+	</bean>
+	<!-- 报表拦截器 -->
+	<bean id="reportInterceptor" class="com.zhys.fjzl.interceptor.ReportInterceptor">
+		<property name="orgService" ref="sysOrgService" />
+		<property name="allowUrl">
+			<list>
+				<value>/fjzl/report_referralRateMain.do</value>
+				<value>/fjzl/report_diseaseStatisticMain.do</value>
+				<value>/fjzl/report_referralOrNotStatisticMain.do</value>
+				<value>/fjzl/report_doctorReferralStatisticMain.do</value>
+				<value>/fjzl/report_unreferralDiseaseMain.do</value>
+				<value>/fjzl/report_referralReasonStatisticMain.do</value>
+				<value>/fjzl/report_illItemStatisticMain.do</value>
+				<value>/fjzl/report_illCheckStatisticMain.do</value>
+			</list>
+		</property>
+	</bean>
+</beans>

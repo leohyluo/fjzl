@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+基础知识库疾病与icd9关系表
+User: Created by auto build
+Date: 2016-12-16 14:08:47
+-->
+<sqlMap namespace="ebm_disease_icd9">
+
+    <typeAlias alias="ebm_disease_icd9" type="com.zhys.fjzl.domain.DiseaseIcd9Relation" />
+
+    <!--基础知识库疾病与icd9关系表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--主键，自增长最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--主键，自增长等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+            <!--主键，自增长最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--疾病id-->
+            <isNotEmpty prepend="and" property="disease_id">
+                <![CDATA[ instr(disease_id, #disease_id#) > 0 ]]>
+            </isNotEmpty>
+            <!--icd9id-->
+            <isNotEmpty prepend="and" property="icd9_id">
+                <![CDATA[ instr(icd9_id, #icd9_id#) > 0 ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建者最小值-->
+            <isNotEmpty prepend="and" property="creator_min">
+                <![CDATA[ creator >= #creator_min# ]]>
+            </isNotEmpty>
+            <!--创建者等于-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ creator = #creator# ]]>
+            </isNotEmpty>
+            <!--创建者最大值-->
+            <isNotEmpty prepend="and" property="creator_max">
+                <![CDATA[ creator <= #creator_max# ]]>
+            </isNotEmpty>
+            <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改者最小值-->
+            <isNotEmpty prepend="and" property="last_updator_min">
+                <![CDATA[ last_updator >= #last_updator_min# ]]>
+            </isNotEmpty>
+            <!--最后修改者等于-->
+            <isNotEmpty prepend="and" property="last_updator">
+                <![CDATA[ last_updator = #last_updator# ]]>
+            </isNotEmpty>
+            <!--最后修改者最大值-->
+            <isNotEmpty prepend="and" property="last_updator_max">
+                <![CDATA[ last_updator <= #last_updator_max# ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--基础知识库疾病与icd9关系表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from ebm_disease_icd9
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--基础知识库疾病与icd9关系表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="ebm_disease_icd9">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                disease_id,
+                icd9_id,
+                create_time,
+                creator,
+                last_update_time,
+                last_updator
+            from ebm_disease_icd9
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建基础知识库疾病与icd9关系表-->
+    <insert id="create" parameterClass="ebm_disease_icd9">
+        <![CDATA[
+            insert into ebm_disease_icd9(
+                disease_id,
+                icd9_id,
+                create_time,
+                creator,
+                last_update_time,
+                last_updator
+            ) values (
+                #disease_id:VARCHAR#,
+                #icd9_id:VARCHAR#,
+                #create_time:TIMESTAMP#,
+                #creator:NUMERIC#,
+                #last_update_time:TIMESTAMP#,
+                #last_updator:NUMERIC#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新基础知识库疾病与icd9关系表-->
+    <update id="update" parameterClass="ebm_disease_icd9">
+        <![CDATA[ update ebm_disease_icd9 ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.disease_id">
+                <![CDATA[ disease_id = #disease_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.icd9_id">
+                <![CDATA[ icd9_id = #icd9_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_updator">
+                <![CDATA[ last_updator = #last_updator:NUMERIC# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除基础知识库疾病与icd9关系表-->
+    <delete id="delete" parameterClass="ebm_disease_icd9">
+        <![CDATA[
+            delete from ebm_disease_icd9 where id = #id#
+        ]]>
+    </delete>
+    <!--通过疾病id删除基础知识库疾病与icd9关系表-->
+    <delete id="deleteByDiseaseId" parameterClass="java.lang.String">
+        <![CDATA[
+            delete from ebm_disease_icd9 where disease_id = #disease_id#
+        ]]>
+    </delete>
+
+</sqlMap>

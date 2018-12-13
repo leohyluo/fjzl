@@ -1,0 +1,41 @@
+drop PROCEDURE if EXISTS diseaseMaper;
+create procedure diseaseMaper(
+	in orgId varchar(20),
+	in createTime varchar(20),
+	out updateNum int
+	)
+	begin
+		DECLARE _error INT DEFAULT 0;
+		DECLARE done INT DEFAULT FALSE;
+		declare _id int;
+		declare _org_id varchar(20);
+		declare _disease_id varchar(20);
+		declare _org_disease_id varchar(20);
+		declare _org_disease_name varchar(100);
+		declare _org_icd_10 varchar(20);
+
+		declare ebm_disease_id varchar(20) default null;
+		declare c_index int default 0;
+			
+		declare dataset_size INT DEFAULT 5;
+		declare cursor1 cursor for SELECT `id`,`org_id`,`disease_id`,`org_disease_id`,`org_disease_name`,`org_icd_10` FROM disease_mapper where org_id=orgId and create_time=createTime;
+	
+		DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET _error=1;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;	
+
+		open cursor1;
+			loop1:loop								
+				fetch cursor1 into _id,_org_id,_disease_id,_org_disease_id,_org_disease_name,_org_icd_10;
+				select id into ebm_disease_id from ebm_disease where disease_name = _org_disease_name and icd_10 = _org_icd_10 limit 0,1;			
+				
+				if ebm_disease_id is not null then
+					update disease_mapper set disease_status = 1,disease_id=ebm_disease_id,type=1 where id = _id;
+					set updateNum = updateNum + 1;
+				end if;
+				if done THEN
+					set updateNum = 100;
+					LEAVE loop1;
+				end if;
+			end loop;
+		close cursor1;
+	end

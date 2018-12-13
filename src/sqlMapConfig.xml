@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-config-2.dtd"[]>
+
+ 
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="true"
+              lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+              maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+
+    <!-- PageParam，ResultMap类指定一个较短的别名 -->
+    <typeAlias alias="PageParam" type="com.zhys.core.domain.PageParam"/>
+    <typeAlias alias="ResultMap" type="com.zhys.core.domain.ResultMap"/>
+    
+    <!--定义数据库类型BLOB，映射到java数据类型  -->
+    <typeHandler jdbcType="BLOB" javaType="[B"
+                 callback="org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler"/>
+    <!--定义数据库类型CLOB，映射到java数据类型  -->
+    <typeHandler jdbcType="CLOB" javaType="java.lang.String"
+                 callback="org.springframework.orm.ibatis.support.ClobStringTypeHandler"/>
+
+    <!-- 引入common.xml -->
+    <sqlMap resource="common.xml"/>
+
+</sqlMapConfig>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+检查对照表
+User: Created by auto build
+Date: 2016-12-19 17:08:55
+-->
+<sqlMap namespace="body_check_mapper">
+
+    <typeAlias alias="body_check_mapper" type="com.zhys.fjzl.domain.CheckMapper" />
+
+    <!--检查对照表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--主键，自增长最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ cmap.id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--主键，自增长等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ cmap.id = #id# ]]>
+            </isNotEmpty>
+               <isNotEmpty prepend="and" property="id_other">
+            	<![CDATA[ id != #id_other# ]]>
+            </isNotEmpty>
+            <!--主键，自增长最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ cmap.id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构id-->
+            <isNotEmpty prepend="and" property="org_id">
+                <![CDATA[ cmap.org_id = #org_id# ]]>
+            </isNotEmpty>
+            <!--知识库检查id-->
+            <isNotEmpty prepend="and" property="check_id">
+                <![CDATA[ cmap.check_id = #check_id# ]]>
+            </isNotEmpty>
+            <!--机构检查id-->
+            <isNotEmpty prepend="and" property="org_check_id">
+                <![CDATA[ cmap.org_check_id = #org_check_id# ]]>
+            </isNotEmpty>
+            <!--机构检查名称-->
+            <isNotEmpty prepend="and" property="org_check_name">
+                <![CDATA[ instr(cmap.org_check_name, #org_check_name#) > 0 ]]>
+            </isNotEmpty>
+              <isNotEmpty prepend="and" property="org_check_name_eq">
+                <![CDATA[ cmap.org_check_name >= #org_check_name_eq#]]>
+            </isNotEmpty>
+            <!--耗材-->
+            <isNotEmpty prepend="and" property="invitation">
+                <![CDATA[ instr(cmap.invitation, #invitation#) > 0 ]]>
+            </isNotEmpty>
+            <!--检查等级最小值-->
+            <isNotEmpty prepend="and" property="grade_min">
+                <![CDATA[ cmap.grade >= #grade_min# ]]>
+            </isNotEmpty>
+            <!--检查等级等于-->
+            <isNotEmpty prepend="and" property="grade">
+                <![CDATA[ cmap.grade = #grade# ]]>
+            </isNotEmpty>
+            <!--检查等级最大值-->
+            <isNotEmpty prepend="and" property="grade_max">
+                <![CDATA[ cmap.grade <= #grade_max# ]]>
+            </isNotEmpty>
+            <!--状态，已对照/未对照/对照失败最小值-->
+            <isNotEmpty prepend="and" property="body_check_status_min">
+                <![CDATA[ cmap.body_check_status >= #body_check_status_min# ]]>
+            </isNotEmpty>
+            <!--状态，已对照/未对照/对照失败等于-->
+            <isNotEmpty prepend="and" property="body_check_status">
+                <![CDATA[ cmap.body_check_status = #body_check_status# ]]>
+            </isNotEmpty>
+            <!--状态，已对照/未对照/对照失败最大值-->
+            <isNotEmpty prepend="and" property="body_check_status_max">
+                <![CDATA[ cmap.body_check_status <= #body_check_status_max# ]]>
+            </isNotEmpty>
+            <!--状态，区间-->
+            <isNotEmpty prepend="and" property="body_check_status_in">
+                <![CDATA[ cmap.body_check_status in ($body_check_status_in$) ]]>
+            </isNotEmpty>
+            <!--是否启用最小值-->
+            <isNotEmpty prepend="and" property="_enable_min">
+                <![CDATA[ cmap._enable >= #_enable_min# ]]>
+            </isNotEmpty>
+            <!--是否启用等于-->
+            <isNotEmpty prepend="and" property="_enable">
+                <![CDATA[ cmap._enable = #_enable# ]]>
+            </isNotEmpty>
+            <!--是否启用最大值-->
+            <isNotEmpty prepend="and" property="_enable_max">
+                <![CDATA[ cmap._enable <= #_enable_max# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ cmap.create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ cmap.create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建者-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ instr(cmap.creator, #creator#) > 0 ]]>
+            </isNotEmpty>
+             <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ cmap.last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ cmap.last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改人最小值-->
+            <isNotEmpty prepend="and" property="last_updateor_min">
+                <![CDATA[ cmap.last_updateor >= #last_updateor_min# ]]>
+            </isNotEmpty>
+            <!--最后修改人等于-->
+            <isNotEmpty prepend="and" property="last_updateor">
+                <![CDATA[ cmap.last_updateor = #last_updateor# ]]>
+            </isNotEmpty>
+            <!--最后修改人最大值-->
+            <isNotEmpty prepend="and" property="last_updateor_max">
+                <![CDATA[ cmap.last_updateor <= #last_updateor_max# ]]>
+            </isNotEmpty>
+            <!--审核时间开始-->
+            <isNotEmpty prepend="and" property="review_time_begin">
+                <![CDATA[ cmap.review_time >= str_to_date(#review_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核时间结束-->
+            <isNotEmpty prepend="and" property="review_time_end">
+                <![CDATA[ cmap.review_time <= str_to_date('$review_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核者-->
+            <isNotEmpty prepend="and" property="reviewor">
+                <![CDATA[ instr(cmap.reviewor, #reviewor#) > 0 ]]>
+            </isNotEmpty>
+            <!--导入批号-->
+            <isNotEmpty prepend="and" property="import_no">
+                <![CDATA[ instr(cmap.import_no, #import_no#) > 0 ]]>
+            </isNotEmpty>
+            <!--对照时间开始-->
+            <isNotEmpty prepend="and" property="mapper_time_begin">
+                <![CDATA[cmap.mapper_time >= str_to_date(#mapper_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--对照时间结束-->
+            <isNotEmpty prepend="and" property="mapper_time_end">
+                <![CDATA[ cmap.mapper_time <= str_to_date('$mapper_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--对照者-->
+            <isNotEmpty prepend="and" property="mapper_user">
+                <![CDATA[ instr(cmap.mapper_user, #mapper_user#) > 0 ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ cmap.id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--检查对照表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from body_check_mapper cmap
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--检查对照表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="body_check_mapper">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                cmap.id,
+                cmap.org_id,
+                o.so_name as orgName,
+                cmap.check_id,
+                bch.name as checkName,
+                cmap.org_check_id,
+                cmap.org_check_name,
+                cmap.invitation,
+                bch.grade,
+                cmap.body_check_status,
+                cmap._enable,
+                  cmap.create_time,
+                b.su_name as creatorName,
+                cmap.last_update_time,
+                c.su_name as last_updatorName,
+                cmap.review_time,
+                d.su_name as revieworName,
+                cmap.import_no,
+                cmap.mapper_time,
+                cmap.mapper_user
+            from body_check_mapper as cmap left JOIN
+			sys_user b on cmap.creator = b.su_id
+			LEFT JOIN sys_user c on cmap.last_updateor = c.su_id
+			LEFT JOIN sys_user d on cmap.reviewor = d.su_id
+			LEFT JOIN sys_org o on cmap.org_id=o.so_id
+			left join ebm_body_check bch on cmap.check_id=bch.id
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+ <!--检查对照表分页记录集-->
+    <select id="queryAll" parameterClass="PageParam" resultClass="body_check_mapper">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                cmap.id,
+                cmap.org_id,
+                '' as orgName,
+                cmap.check_id,
+                '' as checkName,
+                cmap.org_check_id,
+                cmap.org_check_name,
+                cmap.invitation,
+                cmap.grade,
+                cmap.body_check_status,
+                cmap._enable,
+                  cmap.create_time,
+                '' as creatorName,
+                cmap.last_update_time,
+                '' as last_updatorName,
+                cmap.review_time,
+                '' as revieworName,
+                cmap.import_no,
+                cmap.mapper_time,
+                cmap.mapper_user
+            from body_check_mapper as cmap
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+    <!--创建检查对照表-->
+    <insert id="create" parameterClass="body_check_mapper">
+        <![CDATA[
+            insert into body_check_mapper(
+                org_id,
+                check_id,
+                org_check_id,
+                org_check_name,
+                invitation,
+                body_check_status,
+                _enable,
+                create_time,
+                creator,
+                last_update_time,
+                last_updateor,
+                review_time,
+                reviewor,
+                memo,
+                import_no,
+                mapper_time,
+                mapper_user
+            ) values (
+                #org_id:VARCHAR#,
+                #check_id:VARCHAR#,
+                #org_check_id:VARCHAR#,
+                #org_check_name:VARCHAR#,
+                #invitation:VARCHAR#,
+                #body_check_status:NUMERIC#,
+                #_enable:NUMERIC#,
+                #create_time:TIMESTAMP#,
+                #creator:NUMERIC#,
+                #last_update_time:TIMESTAMP#,
+                #last_updateor:NUMERIC#,
+                #review_time:TIMESTAMP#,
+                #reviewor:NUMERIC#,
+                #memo:VARCHAR#,
+                #import_no:VARCHAR#,
+                #mapper_time:TIMESTAMP#,
+                #mapper_user:VARCHAR#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新检查对照表-->
+    <update id="update" parameterClass="body_check_mapper">
+        <![CDATA[ update body_check_mapper ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.org_id">
+                <![CDATA[ org_id = #org_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.check_id">
+                <![CDATA[ check_id = #check_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_check_id">
+                <![CDATA[ org_check_id = #org_check_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_check_name">
+                <![CDATA[ org_check_name = #org_check_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.invitation">
+                <![CDATA[ invitation = #invitation:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.body_check_status">
+                <![CDATA[ body_check_status = #body_check_status:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields._enable">
+                <![CDATA[ _enable = #_enable:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_updateor">
+                <![CDATA[ last_updateor = #last_updateor:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.review_time">
+                <![CDATA[ review_time = #review_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.reviewor">
+                <![CDATA[ reviewor = #reviewor:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.import_no">
+                <![CDATA[ import_no = #import_no:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.mapper_time">
+                <![CDATA[ mapper_time = #mapper_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.mapper_user">
+                <![CDATA[ mapper_user = #mapper_user:VARCHAR# ]]>
+            </isPropertyAvailable>
+           <isPropertyAvailable prepend="," property="fields.memo">
+                <![CDATA[ memo = #memo:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除检查对照表-->
+    <delete id="delete" parameterClass="body_check_mapper">
+        <![CDATA[
+            delete from body_check_mapper where id = #id#
+        ]]>
+    </delete>
+	
+	<!-- 储存过程对照中成药 -->
+	<parameterMap class="map" id="checkSwapParam">    
+	    <parameter property="orgId"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>
+	    <parameter property="importNo"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>    
+	    <parameter property="result"  javaType="java.lang.Integer" jdbcType="int" mode="OUT"/>    
+	</parameterMap>
+	<procedure id="autoMatch" parameterMap="checkSwapParam">
+		 <![CDATA[
+           CALL bodyCheck_mapper(?,?,?)
+        ]]>
+	</procedure>
+</sqlMap>

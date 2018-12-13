@@ -1,0 +1,330 @@
+2016-10-10 14:39:05 [INFO] org.springframework.web.context.ContextLoader
+Root WebApplicationContext: initialization started
+
+2016-10-10 14:39:05 [INFO] org.springframework.web.context.support.XmlWebApplicationContext
+Refreshing Root WebApplicationContext: startup date [Mon Oct 10 14:39:05 CST 2016]; root of context hierarchy
+
+2016-10-10 14:39:05 [INFO] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+Loading XML bean definitions from file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]
+
+2016-10-10 14:39:07 [INFO] org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+Loading properties file from class path resource [config_local.properties]
+
+2016-10-10 14:39:07 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@530e3b65: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:39:08 [INFO] org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
+ClassTemplateLoader for Spring macros added to FreeMarker configuration
+
+2016-10-10 14:39:08 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@530e3b65: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:39:08 [ERROR] org.springframework.web.context.ContextLoader
+Context initialization failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlMapClient' defined in file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]: Invocation of init method failed; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\com\zhys\sys\domain\Action.xml]; nested exception is com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1512)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:458)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:296)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:223)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:293)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:610)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:479)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:389)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:294)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:112)
+	at org.mortbay.jetty.handler.ContextHandler.startContext(ContextHandler.java:549)
+	at org.mortbay.jetty.servlet.Context.startContext(Context.java:136)
+	at org.mortbay.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1282)
+	at org.mortbay.jetty.handler.ContextHandler.doStart(ContextHandler.java:518)
+	at org.mortbay.jetty.webapp.WebAppContext.doStart(WebAppContext.java:499)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerWrapper.doStart(HandlerWrapper.java:130)
+	at org.mortbay.jetty.Server.doStart(Server.java:224)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at runjettyrun.Bootstrap.main(Bootstrap.java:97)
+Caused by: org.springframework.core.NestedIOException: Failed to parse mapping resource: file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\com\zhys\sys\domain\Action.xml]; nested exception is com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.buildSqlMapClient(SqlMapClientFactoryBean.java:354)
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.afterPropertiesSet(SqlMapClientFactoryBean.java:293)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1571)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1509)
+	... 22 more
+Caused by: com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:62)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlMapParser.parse(SqlMapParser.java:44)
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.buildSqlMapClient(SqlMapClientFactoryBean.java:351)
+	... 25 more
+Caused by: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.common.xml.NodeletParser.processNodelet(NodeletParser.java:123)
+	at com.ibatis.common.xml.NodeletParser.process(NodeletParser.java:84)
+	at com.ibatis.common.xml.NodeletParser.process(NodeletParser.java:102)
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:72)
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:60)
+	... 27 more
+Caused by: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.resolveClass(SqlStatementParser.java:89)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.parseGeneralStatement(SqlStatementParser.java:64)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlMapParser$21.process(SqlMapParser.java:362)
+	at com.ibatis.common.xml.NodeletParser.processNodelet(NodeletParser.java:121)
+	... 31 more
+Caused by: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at org.mortbay.jetty.webapp.WebAppClassLoader.loadClass(WebAppClassLoader.java:392)
+	at runjettyrun.ProjectClassLoader.loadClass(ProjectClassLoader.java:89)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:190)
+	at com.ibatis.common.resources.Resources.classForName(Resources.java:267)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.resolveClass(SqlStatementParser.java:84)
+	... 34 more
+2016-10-10 14:41:30 [INFO] org.springframework.web.context.ContextLoader
+Root WebApplicationContext: initialization started
+
+2016-10-10 14:41:30 [INFO] org.springframework.web.context.support.XmlWebApplicationContext
+Refreshing Root WebApplicationContext: startup date [Mon Oct 10 14:41:30 CST 2016]; root of context hierarchy
+
+2016-10-10 14:41:30 [INFO] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+Loading XML bean definitions from file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]
+
+2016-10-10 14:41:31 [INFO] org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+Loading properties file from class path resource [config_local.properties]
+
+2016-10-10 14:41:31 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@76a0f9cb: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:41:32 [INFO] org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
+ClassTemplateLoader for Spring macros added to FreeMarker configuration
+
+2016-10-10 14:41:32 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@76a0f9cb: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:41:32 [ERROR] org.springframework.web.context.ContextLoader
+Context initialization failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlMapClient' defined in file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]: Invocation of init method failed; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\com\zhys\sys\domain\Action.xml]; nested exception is com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1512)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:458)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:296)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:223)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:293)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:610)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:479)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:389)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:294)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:112)
+	at org.mortbay.jetty.handler.ContextHandler.startContext(ContextHandler.java:549)
+	at org.mortbay.jetty.servlet.Context.startContext(Context.java:136)
+	at org.mortbay.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1282)
+	at org.mortbay.jetty.handler.ContextHandler.doStart(ContextHandler.java:518)
+	at org.mortbay.jetty.webapp.WebAppContext.doStart(WebAppContext.java:499)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerWrapper.doStart(HandlerWrapper.java:130)
+	at org.mortbay.jetty.Server.doStart(Server.java:224)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at runjettyrun.Bootstrap.main(Bootstrap.java:97)
+Caused by: org.springframework.core.NestedIOException: Failed to parse mapping resource: file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\com\zhys\sys\domain\Action.xml]; nested exception is com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.buildSqlMapClient(SqlMapClientFactoryBean.java:354)
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.afterPropertiesSet(SqlMapClientFactoryBean.java:293)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1571)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1509)
+	... 22 more
+Caused by: com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:62)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlMapParser.parse(SqlMapParser.java:44)
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.buildSqlMapClient(SqlMapClientFactoryBean.java:351)
+	... 25 more
+Caused by: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.common.xml.NodeletParser.processNodelet(NodeletParser.java:123)
+	at com.ibatis.common.xml.NodeletParser.process(NodeletParser.java:84)
+	at com.ibatis.common.xml.NodeletParser.process(NodeletParser.java:102)
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:72)
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:60)
+	... 27 more
+Caused by: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.resolveClass(SqlStatementParser.java:89)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.parseGeneralStatement(SqlStatementParser.java:64)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlMapParser$21.process(SqlMapParser.java:362)
+	at com.ibatis.common.xml.NodeletParser.processNodelet(NodeletParser.java:121)
+	... 31 more
+Caused by: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at org.mortbay.jetty.webapp.WebAppClassLoader.loadClass(WebAppClassLoader.java:392)
+	at runjettyrun.ProjectClassLoader.loadClass(ProjectClassLoader.java:89)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:190)
+	at com.ibatis.common.resources.Resources.classForName(Resources.java:267)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.resolveClass(SqlStatementParser.java:84)
+	... 34 more
+2016-10-10 14:45:57 [INFO] org.springframework.web.context.ContextLoader
+Root WebApplicationContext: initialization started
+
+2016-10-10 14:45:57 [INFO] org.springframework.web.context.support.XmlWebApplicationContext
+Refreshing Root WebApplicationContext: startup date [Mon Oct 10 14:45:57 CST 2016]; root of context hierarchy
+
+2016-10-10 14:45:57 [INFO] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+Loading XML bean definitions from file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]
+
+2016-10-10 14:45:59 [INFO] org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+Loading properties file from class path resource [config_local.properties]
+
+2016-10-10 14:45:59 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@426fbb45: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:45:59 [INFO] org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
+ClassTemplateLoader for Spring macros added to FreeMarker configuration
+
+2016-10-10 14:46:00 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@426fbb45: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:46:00 [ERROR] org.springframework.web.context.ContextLoader
+Context initialization failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlMapClient' defined in file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]: Invocation of init method failed; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\com\zhys\sys\domain\Action.xml]; nested exception is com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1512)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:458)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:296)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:223)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:293)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:610)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:479)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:389)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:294)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:112)
+	at org.mortbay.jetty.handler.ContextHandler.startContext(ContextHandler.java:549)
+	at org.mortbay.jetty.servlet.Context.startContext(Context.java:136)
+	at org.mortbay.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1282)
+	at org.mortbay.jetty.handler.ContextHandler.doStart(ContextHandler.java:518)
+	at org.mortbay.jetty.webapp.WebAppContext.doStart(WebAppContext.java:499)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerWrapper.doStart(HandlerWrapper.java:130)
+	at org.mortbay.jetty.Server.doStart(Server.java:224)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at runjettyrun.Bootstrap.main(Bootstrap.java:97)
+Caused by: org.springframework.core.NestedIOException: Failed to parse mapping resource: file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\com\zhys\sys\domain\Action.xml]; nested exception is com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.buildSqlMapClient(SqlMapClientFactoryBean.java:354)
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.afterPropertiesSet(SqlMapClientFactoryBean.java:293)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1571)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1509)
+	... 22 more
+Caused by: com.ibatis.common.xml.NodeletException: Error parsing XML.  Cause: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:62)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlMapParser.parse(SqlMapParser.java:44)
+	at org.springframework.orm.ibatis.SqlMapClientFactoryBean.buildSqlMapClient(SqlMapClientFactoryBean.java:351)
+	... 25 more
+Caused by: java.lang.RuntimeException: Error parsing XPath '/sqlMap/select'.  Cause: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.common.xml.NodeletParser.processNodelet(NodeletParser.java:123)
+	at com.ibatis.common.xml.NodeletParser.process(NodeletParser.java:84)
+	at com.ibatis.common.xml.NodeletParser.process(NodeletParser.java:102)
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:72)
+	at com.ibatis.common.xml.NodeletParser.parse(NodeletParser.java:60)
+	... 27 more
+Caused by: com.ibatis.sqlmap.client.SqlMapException: Error.  Could not initialize class.  Cause: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.resolveClass(SqlStatementParser.java:89)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.parseGeneralStatement(SqlStatementParser.java:64)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlMapParser$21.process(SqlMapParser.java:362)
+	at com.ibatis.common.xml.NodeletParser.processNodelet(NodeletParser.java:121)
+	... 31 more
+Caused by: java.lang.ClassNotFoundException: com.rogrand.sys.domain.Action
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at org.mortbay.jetty.webapp.WebAppClassLoader.loadClass(WebAppClassLoader.java:392)
+	at runjettyrun.ProjectClassLoader.loadClass(ProjectClassLoader.java:89)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:190)
+	at com.ibatis.common.resources.Resources.classForName(Resources.java:267)
+	at com.ibatis.sqlmap.engine.builder.xml.SqlStatementParser.resolveClass(SqlStatementParser.java:84)
+	... 34 more
+2016-10-10 14:52:51 [INFO] org.springframework.web.context.ContextLoader
+Root WebApplicationContext: initialization started
+
+2016-10-10 14:52:51 [INFO] org.springframework.web.context.support.XmlWebApplicationContext
+Refreshing Root WebApplicationContext: startup date [Mon Oct 10 14:52:51 CST 2016]; root of context hierarchy
+
+2016-10-10 14:52:51 [INFO] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+Loading XML bean definitions from file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]
+
+2016-10-10 14:52:53 [INFO] org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+Loading properties file from class path resource [config_local.properties]
+
+2016-10-10 14:52:53 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@356fd116: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:52:53 [INFO] org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
+ClassTemplateLoader for Spring macros added to FreeMarker configuration
+
+2016-10-10 14:52:54 [INFO] org.springframework.beans.factory.support.DefaultListableBeanFactory
+Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@356fd116: defining beans [propertyConfigurer,freeMarkerConfigurer,freeMarkerViewResolver,exceptionResolver,dataSource,defaultLobHandler,oracleLobHandler,sqlMapClient,transactionManager,pageService,buildService,daoAdvice,rightAdvice,cacheManager,sqlDao,MongoDbService,mysqlPageService,pushletService,sysAppService,loginService,sysLogService,sysMenuService,sysOrgService,sysRoleService,SysconfigService,sysUserService,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,daoOperation,org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor#0,jedisPoolConfig,jedisConnectionFactory,redisTemplate,org.springframework.beans.factory.config.CustomEditorConfigurer#0,mongoDbFactory,mongoTemplate,springContextHolder,bcryptEncoder,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor]; root of factory hierarchy
+
+2016-10-10 14:52:54 [ERROR] org.springframework.web.context.ContextLoader
+Context initialization failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'pageService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: com.zhys.core.service.AbstractPageService com.zhys.core.service.PageService.mysqlPageService; nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.zhys.sys.service.PasswordEncoderFactoryBean] for bean with name 'bcryptEncoder' defined in file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]; nested exception is java.lang.ClassNotFoundException: com.zhys.sys.service.PasswordEncoderFactoryBean
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:289)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1146)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:519)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:458)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:296)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:223)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:293)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:628)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:479)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:389)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:294)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:112)
+	at org.mortbay.jetty.handler.ContextHandler.startContext(ContextHandler.java:549)
+	at org.mortbay.jetty.servlet.Context.startContext(Context.java:136)
+	at org.mortbay.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1282)
+	at org.mortbay.jetty.handler.ContextHandler.doStart(ContextHandler.java:518)
+	at org.mortbay.jetty.webapp.WebAppContext.doStart(WebAppContext.java:499)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerWrapper.doStart(HandlerWrapper.java:130)
+	at org.mortbay.jetty.Server.doStart(Server.java:224)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at runjettyrun.Bootstrap.main(Bootstrap.java:97)
+Caused by: org.springframework.beans.factory.BeanCreationException: Could not autowire field: com.zhys.core.service.AbstractPageService com.zhys.core.service.PageService.mysqlPageService; nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.zhys.sys.service.PasswordEncoderFactoryBean] for bean with name 'bcryptEncoder' defined in file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]; nested exception is java.lang.ClassNotFoundException: com.zhys.sys.service.PasswordEncoderFactoryBean
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:517)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:87)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:286)
+	... 23 more
+Caused by: org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.zhys.sys.service.PasswordEncoderFactoryBean] for bean with name 'bcryptEncoder' defined in file [E:\WorkSpace\Lineshow\workspaces\space1\fjzl-manager\build\classes\bean-core.xml]; nested exception is java.lang.ClassNotFoundException: com.zhys.sys.service.PasswordEncoderFactoryBean
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveBeanClass(AbstractBeanFactory.java:1281)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(AbstractAutowireCapableBeanFactory.java:575)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.isFactoryBean(AbstractBeanFactory.java:1350)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doGetBeanNamesForType(DefaultListableBeanFactory.java:355)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:334)
+	at org.springframework.beans.factory.BeanFactoryUtils.beanNamesForTypeIncludingAncestors(BeanFactoryUtils.java:187)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:897)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:855)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:770)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:489)
+	... 25 more
+Caused by: java.lang.ClassNotFoundException: com.zhys.sys.service.PasswordEncoderFactoryBean
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at org.mortbay.jetty.webapp.WebAppClassLoader.loadClass(WebAppClassLoader.java:392)
+	at runjettyrun.ProjectClassLoader.loadClass(ProjectClassLoader.java:89)
+	at org.springframework.util.ClassUtils.forName(ClassUtils.java:257)
+	at org.springframework.beans.factory.support.AbstractBeanDefinition.resolveBeanClass(AbstractBeanDefinition.java:416)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doResolveBeanClass(AbstractBeanFactory.java:1302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveBeanClass(AbstractBeanFactory.java:1273)
+	... 34 more

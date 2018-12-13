@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+转诊规则表
+User: Created by auto build
+Date: 2017-01-16 15:30:11
+-->
+<sqlMap namespace="referral_options">
+
+    <typeAlias alias="referral_options" type="com.zhys.fjzl.domain.Options" />
+
+    <!--转诊规则表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--主键，自增长最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ op.id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--主键，自增长等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ op.id = #id# ]]>
+            </isNotEmpty>
+            <!--主键，自增长最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ op.id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构id-->
+            <isNotEmpty prepend="and" property="org_id">
+                <![CDATA[ instr(org_id, #org_id#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构名称-->
+            <isNotEmpty prepend="and" property="referral_id">
+                <![CDATA[ instr(referral_id, #referral_id#) > 0 ]]>
+            </isNotEmpty>
+            <!--无最小值-->
+            <isNotEmpty prepend="and" property="_enable_min">
+                <![CDATA[ _enable >= #_enable_min# ]]>
+            </isNotEmpty>
+            <!--无等于-->
+            <isNotEmpty prepend="and" property="_enable">
+                <![CDATA[ _enable = #_enable# ]]>
+            </isNotEmpty>
+            <!--无最大值-->
+            <isNotEmpty prepend="and" property="_enable_max">
+                <![CDATA[ _enable <= #_enable_max# ]]>
+            </isNotEmpty>
+            <!--序号最小值-->
+            <isNotEmpty prepend="and" property="_order_min">
+                <![CDATA[ _order >= #_order_min# ]]>
+            </isNotEmpty>
+            <!--序号等于-->
+            <isNotEmpty prepend="and" property="_order">
+                <![CDATA[ _order = #_order# ]]>
+            </isNotEmpty>
+            <!--序号最大值-->
+            <isNotEmpty prepend="and" property="_order_max">
+                <![CDATA[ _order <= #_order_max# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ op.create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ op.create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建者最小值-->
+            <isNotEmpty prepend="and" property="creator_min">
+                <![CDATA[ op.creator >= #creator_min# ]]>
+            </isNotEmpty>
+            <!--创建者等于-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ op.creator = #creator# ]]>
+            </isNotEmpty>
+            <!--创建者最大值-->
+            <isNotEmpty prepend="and" property="creator_max">
+                <![CDATA[ op.creator <= #creator_max# ]]>
+            </isNotEmpty>
+            <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ op.last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ op.last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改者最小值-->
+            <isNotEmpty prepend="and" property="last_updator_min">
+                <![CDATA[ op.last_updator >= #last_updator_min# ]]>
+            </isNotEmpty>
+            <!--最后修改者等于-->
+            <isNotEmpty prepend="and" property="last_updator">
+                <![CDATA[ op.last_updator = #last_updator# ]]>
+            </isNotEmpty>
+            <!--最后修改者最大值-->
+            <isNotEmpty prepend="and" property="last_updator_max">
+                <![CDATA[ op.last_updator <= #last_updator_max# ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ op.id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--转诊规则表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from referral_options
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--转诊规则表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="referral_options">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                op.id,
+                op.org_id,
+                op.referral_id,
+                r.name as referralName,
+                r.code as ruleCode,
+                op._enable,
+                op._order,
+                op.create_time,
+                b.su_name as creatorName,
+                op.last_update_time,
+                c.su_name as last_updatorName
+            from referral_options as op
+            INNER JOIN ebm_referral_rule r on op.referral_id=r.id
+            INNER JOIN sys_user b on op.creator = b.su_id
+			LEFT JOIN sys_user c on op.last_updator = c.su_id
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建转诊规则表-->
+    <insert id="create" parameterClass="referral_options">
+        <![CDATA[
+            insert into referral_options(
+                org_id,
+                referral_id,
+                _enable,
+                _order,
+                create_time,
+                creator,
+                last_update_time,
+                last_updator
+            ) values (
+                #org_id:VARCHAR#,
+                #referral_id:NUMERIC#,
+                #_enable:NUMERIC#,
+                #_order:NUMERIC#,
+                #create_time:TIMESTAMP#,
+                #creator:NUMERIC#,
+                #last_update_time:TIMESTAMP#,
+                #last_updator:NUMERIC#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新转诊规则表-->
+    <update id="update" parameterClass="referral_options">
+        <![CDATA[ update referral_options ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.org_id">
+                <![CDATA[ org_id = #org_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.referral_id">
+                <![CDATA[ referral_id = #referral_id:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields._enable">
+                <![CDATA[ _enable = #_enable:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields._order">
+                <![CDATA[ _order = #_order:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_updator">
+                <![CDATA[ last_updator = #last_updator:NUMERIC# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除转诊规则表-->
+    <delete id="delete" parameterClass="referral_options">
+        <![CDATA[
+            delete from referral_options where id = #id#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,34 @@
+
+-- 西药对照储存过程
+drop PROCEDURE if exists xy_mapper;
+create procedure xy_mapper(
+	in orgId varchar(20),
+  in importNo varchar(64),
+  out effectRows int
+)
+	BEGIN
+		DECLARE _error INT DEFAULT 0;
+		DECLARE done INT DEFAULT FALSE;
+		declare ebm_drug_id varchar(20) default null;
+		declare _id varchar(20) default null;
+		declare _org_drug_name varchar(20) default null;
+		declare _org_dosage_form varchar(50) default null;
+		declare cursor1 cursor for select id,org_drug_name,dosage_form from drug_mapper where type = 1 and (drug_status = 0 or drug_status is null) and org_id = orgId and import_no = importNo;
+		
+		DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET _error=1;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;			
+
+		open cursor1;
+			loop1:loop
+				fetch cursor1 into _id,_org_drug_name,_org_dosage_form;
+				select id into ebm_drug_id from ebm_western_medicine where drug_name = _org_drug_name and dosage_form = _org_dosage_form limit 0,1;
+				if ebm_drug_id is not null THEN
+					update drug_mapper set drug_status = 1,drug_id=ebm_drug_id,mapper_time=now() where id=_id;
+					set effectRows = effectRows + 1;
+				end if;
+				if done then
+					leave loop1;
+				end if;
+			end loop;
+		close cursor1;
+	END

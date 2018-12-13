@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+疾病对照表
+User: Created by auto build
+Date: 2016-12-21 10:32:17
+-->
+<sqlMap namespace="disease_mapper">
+
+    <typeAlias alias="disease_mapper" type="com.zhys.fjzl.domain.DiseaseMapper" />
+
+    <!--疾病对照表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--id最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ dm.id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--id等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ dm.id = #id# ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="id_other">
+            	<![CDATA[ id != #id_other# ]]>
+            </isNotEmpty>
+            <!--id最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ dm.id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构id-->
+            <isNotEmpty prepend="and" property="org_id">
+                <![CDATA[ dm.org_id = #org_id# ]]>
+            </isNotEmpty>
+            <!--疾病id-->
+            <isNotEmpty prepend="and" property="disease_id">
+                <![CDATA[ dm.disease_id = #disease_id# ]]>
+            </isNotEmpty>
+            <!--机构疾病id-->
+            <isNotEmpty prepend="and" property="org_disease_id">
+                <![CDATA[ dm.org_disease_id = #org_disease_id# ]]>
+            </isNotEmpty>
+            <!--机构疾病名称-->
+            <isNotEmpty prepend="and" property="org_disease_name">
+                <![CDATA[ instr(dm.org_disease_name, #org_disease_name#) > 0 ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="org_disease_name_eq">
+                <![CDATA[ dm.org_disease_name = #org_disease_name_eq# ]]>
+            </isNotEmpty>
+            <!--机构icd10-->
+            <isNotEmpty prepend="and" property="org_icd_10">
+                <![CDATA[ instr(dm.org_icd_10, #org_icd_10#) > 0 ]]>
+            </isNotEmpty>
+            <!--疾病定义-->
+            <isNotEmpty prepend="and" property="definition">
+                <![CDATA[ instr(dm.definition, #definition#) > 0 ]]>
+            </isNotEmpty>
+            <!--状态最小值-->
+            <isNotEmpty prepend="and" property="disease_status_min">
+                <![CDATA[ dm.disease_status >= #disease_status_min# ]]>
+            </isNotEmpty>
+            <!--状态等于-->
+            <isNotEmpty prepend="and" property="disease_status">
+                <![CDATA[ dm.disease_status = #disease_status# ]]>
+            </isNotEmpty>
+            <!--状态最大值-->
+            <isNotEmpty prepend="and" property="disease_status_max">
+                <![CDATA[ dm.disease_status <= #disease_status_max# ]]>
+            </isNotEmpty>
+            <!--状态在某个区间-->
+            <isNotEmpty prepend="and" property="disease_status_in">
+                <![CDATA[ dm.disease_status in ($disease_status_in$) ]]>
+            </isNotEmpty>
+            <!--对照方式最小值-->
+            <isNotEmpty prepend="and" property="type_min">
+                <![CDATA[ dm.type >= #type_min# ]]>
+            </isNotEmpty>
+            <!--对照方式等于-->
+            <isNotEmpty prepend="and" property="type">
+                <![CDATA[ dm.type = #type# ]]>
+            </isNotEmpty>
+            <!--对照方式最大值-->
+            <isNotEmpty prepend="and" property="type_max">
+                <![CDATA[ dm.type <= #type_max# ]]>
+            </isNotEmpty>
+               <!--是否启用最小值-->
+            <isNotEmpty prepend="and" property="_enable_min">
+                <![CDATA[ dm._enable >= #_enable_min# ]]>
+            </isNotEmpty>
+            <!--是否启用等于-->
+            <isNotEmpty prepend="and" property="_enable">
+                <![CDATA[ dm._enable = #_enable# ]]>
+            </isNotEmpty>
+            <!--是否启用最大值-->
+            <isNotEmpty prepend="and" property="_enable_max">
+                <![CDATA[ dm._enable <= #_enable_max# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ dm.create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ dm.create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建者最小值-->
+            <isNotEmpty prepend="and" property="creator_min">
+                <![CDATA[ dm.creator >= #creator_min# ]]>
+            </isNotEmpty>
+            <!--创建者等于-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ dm.creator = #creator# ]]>
+            </isNotEmpty>
+            <!--创建者最大值-->
+            <isNotEmpty prepend="and" property="creator_max">
+                <![CDATA[ dm.creator <= #creator_max# ]]>
+            </isNotEmpty>
+             <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ dm.last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ dm.last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改人最小值-->
+            <isNotEmpty prepend="and" property="last_updateor_min">
+                <![CDATA[ dm.last_updateor >= #last_updateor_min# ]]>
+            </isNotEmpty>
+            <!--最后修改人等于-->
+            <isNotEmpty prepend="and" property="last_updateor">
+                <![CDATA[ dm.last_updateor = #last_updateor# ]]>
+            </isNotEmpty>
+            <!--最后修改人最大值-->
+            <isNotEmpty prepend="and" property="last_updateor_max">
+                <![CDATA[ dm.last_updateor <= #last_updateor_max# ]]>
+            </isNotEmpty>
+            <!--审核时间开始-->
+            <isNotEmpty prepend="and" property="review_time_begin">
+                <![CDATA[ dm.review_time >= str_to_date(#review_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核时间结束-->
+            <isNotEmpty prepend="and" property="review_time_end">
+                <![CDATA[ dm.review_time <= str_to_date('$review_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核者最小值-->
+            <isNotEmpty prepend="and" property="reviewor_min">
+                <![CDATA[ dm.reviewor >= #reviewor_min# ]]>
+            </isNotEmpty>
+            <!--审核者等于-->
+            <isNotEmpty prepend="and" property="reviewor">
+                <![CDATA[ dm.reviewor = #reviewor# ]]>
+            </isNotEmpty>
+            <!--审核者最大值-->
+            <isNotEmpty prepend="and" property="reviewor_max">
+                <![CDATA[ dm.reviewor <= #reviewor_max# ]]>
+            </isNotEmpty>
+            <!--疾病等级最小值-->
+            <!-- <isNotEmpty prepend="and" property="grade_min">
+                <![CDATA[ dm.grade >= #grade_min# ]]>
+            </isNotEmpty> -->
+            <!--疾病等级等于-->
+            <isNotEmpty prepend="and" property="grade">
+                <![CDATA[ instr(dm.grade, #grade#) > 0 ]]>
+            </isNotEmpty>
+            <!--疾病等级最大值-->
+            <!-- <isNotEmpty prepend="and" property="grade_max">
+                <![CDATA[ dm.grade <= #grade_max# ]]>
+            </isNotEmpty> -->
+            <!--导入批号-->
+            <isNotEmpty prepend="and" property="import_no">
+                <![CDATA[ instr(dm.import_no, #import_no#) > 0 ]]>
+            </isNotEmpty>
+            <!--对照者-->
+            <isNotEmpty prepend="and" property="mapper_user">
+                <![CDATA[ instr(dm.mapper_user, #mapper_user#) > 0 ]]>
+            </isNotEmpty>
+            <!--对照时间开始-->
+            <isNotEmpty prepend="and" property="mapper_time_begin">
+                <![CDATA[ dm.mapper_time >= str_to_date(#mapper_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--对照时间结束-->
+            <isNotEmpty prepend="and" property="mapper_time_end">
+                <![CDATA[ dm.mapper_time <= str_to_date('$mapper_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ dm.id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+	<!--疾病对照表分页条件-->
+    <sql id="apiPageWhere">
+        <dynamic prepend="where">
+            <!--id等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+           
+            <!--机构id-->
+            <isNotEmpty prepend="and" property="org_id">
+                <![CDATA[ org_id = #org_id# ]]>
+            </isNotEmpty>
+            <!--疾病id-->
+            <isNotEmpty prepend="and" property="disease_id">
+                <![CDATA[ disease_id = #disease_id# ]]>
+            </isNotEmpty>
+            <!--机构疾病id-->
+            <isNotEmpty prepend="and" property="org_disease_id">
+                <![CDATA[ org_disease_id = #org_disease_id# ]]>
+            </isNotEmpty>
+            <!--机构疾病名称-->
+            <isNotEmpty prepend="and" property="org_disease_name">
+                <![CDATA[ instr(org_disease_name, #org_disease_name#) > 0 ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="org_disease_name_eq">
+                <![CDATA[ org_disease_name = #org_disease_name_eq# ]]>
+            </isNotEmpty>
+            <!--机构icd10-->
+            <isNotEmpty prepend="and" property="org_icd_10">
+                <![CDATA[ instr(org_icd_10, #org_icd_10#) > 0 ]]>
+            </isNotEmpty>
+            <!--疾病定义-->
+            <isNotEmpty prepend="and" property="definition">
+                <![CDATA[ instr(definition, #definition#) > 0 ]]>
+            </isNotEmpty>
+            
+            <!--状态等于-->
+            <isNotEmpty prepend="and" property="disease_status">
+                <![CDATA[ disease_status = #disease_status# ]]>
+            </isNotEmpty>
+         
+            <!--对照方式等于-->
+            <isNotEmpty prepend="and" property="type">
+                <![CDATA[ type = #type# ]]>
+            </isNotEmpty>
+         
+            <!--是否启用等于-->
+            <isNotEmpty prepend="and" property="_enable">
+                <![CDATA[ _enable = #_enable# ]]>
+            </isNotEmpty>
+           
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建者等于-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ creator = #creator# ]]>
+            </isNotEmpty>
+           
+             <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+           
+            <!--审核时间开始-->
+            <isNotEmpty prepend="and" property="review_time_begin">
+                <![CDATA[ review_time >= str_to_date(#review_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核时间结束-->
+            <isNotEmpty prepend="and" property="review_time_end">
+                <![CDATA[ review_time <= str_to_date('$review_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            
+            <!--审核者等于-->
+            <isNotEmpty prepend="and" property="reviewor">
+                <![CDATA[ reviewor = #reviewor# ]]>
+            </isNotEmpty>
+            <!--疾病等级等于-->
+            <isNotEmpty prepend="and" property="grade">
+                <![CDATA[ grade = #grade# ]]>
+            </isNotEmpty>
+            <!--导入批号-->
+            <isNotEmpty prepend="and" property="import_no">
+                <![CDATA[ instr(import_no, #import_no#) > 0 ]]>
+            </isNotEmpty>
+            <!--对照者-->
+            <isNotEmpty prepend="and" property="mapper_user">
+                <![CDATA[ instr(mapper_user, #mapper_user#) > 0 ]]>
+            </isNotEmpty>
+            <!--对照时间开始-->
+            <isNotEmpty prepend="and" property="mapper_time_begin">
+                <![CDATA[ mapper_time >= str_to_date(#mapper_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--对照时间结束-->
+            <isNotEmpty prepend="and" property="mapper_time_end">
+                <![CDATA[ mapper_time <= str_to_date('$mapper_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--疾病对照表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from disease_mapper dm
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--疾病对照表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="disease_mapper">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                 dm.id,
+                 dm.org_id,
+              	 o.so_name as orgName,
+                 dm.disease_id,
+                 dis.disease_name as diseaseName,
+                 dis.icd_10 as ebmIcd10,
+                 dis.grade,
+                 dm.org_disease_id,
+                 dm.org_disease_name,
+                 dm.org_icd_10,
+                 dm.definition,
+                 dm.disease_status,
+                 dm.type,
+                 dm._enable,
+                 dm.create_time,
+                b.su_name as creatorName,
+                 dm.last_update_time,
+                c.su_name as last_updatorName,
+                 dm.review_time,
+                d.su_name as revieworName,
+                 dm.import_no,
+                 dm.mapper_user,
+                 dm.mapper_time
+            from disease_mapper as dm left JOIN
+			sys_user b on dm.creator = b.su_id
+			LEFT JOIN sys_user c on dm.last_updateor = c.su_id
+			LEFT JOIN sys_user d on dm.reviewor = d.su_id
+			LEFT JOIN sys_org o on dm.org_id=o.so_id
+			LEFT JOIN ebm_disease dis on dm.disease_id=dis.id
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+    
+    <!--疾病对照表分页记录集-->
+    <select id="apiPageList" parameterClass="PageParam" resultClass="disease_mapper">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                 id,
+                 org_id,
+              	 disease_id,
+                 org_disease_id,
+                 org_disease_name,
+                 org_icd_10,
+                 definition,
+                 disease_status,
+                 type,
+                 _enable,
+                 create_time,
+                 creator,
+                 last_update_time,
+                 last_updateor,
+                 review_time,
+                 reviewor,
+                 grade,
+                 import_no,
+                 mapper_user,
+                 mapper_time
+            from disease_mapper
+        ]]>
+        <include refid="apiPageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+    
+     <!--疾病对照表分页记录集-->
+    <select id="queryAll" parameterClass="PageParam" resultClass="disease_mapper">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                 dm.id,
+                 dm.org_id,
+              	 '' as orgName,
+                 dm.disease_id,
+                '' as diseaseName,
+                '' as ebmIcd10,
+                 dm.org_disease_id,
+                 dm.org_disease_name,
+                 dm.org_icd_10,
+                 dm.definition,
+                 dm.disease_status,
+                 dm.type,
+                 dm._enable,
+                 dm.create_time,
+                '' as creatorName,
+                 dm.last_update_time,
+                '' as last_updatorName,
+                 dm.review_time,
+                '' as revieworName,
+                 dm.grade,
+                 dm.import_no,
+                 dm.mapper_user,
+                 dm.mapper_time
+            from disease_mapper as dm
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建疾病对照表-->
+    <insert id="create" parameterClass="disease_mapper">
+        <![CDATA[
+            insert into disease_mapper(
+                org_id,
+                disease_id,
+                org_disease_id,
+                org_disease_name,
+                org_icd_10,
+                definition,
+                disease_status,
+                type,
+                 _enable,
+                create_time,
+                creator,
+                last_update_time,
+                last_updateor,
+                review_time,
+                reviewor,
+                grade,
+                memo,
+                import_no,
+                mapper_user,
+                mapper_time
+            ) values (
+                #org_id:VARCHAR#,
+                #disease_id:VARCHAR#,
+                #org_disease_id:VARCHAR#,
+                #org_disease_name:VARCHAR#,
+                #org_icd_10:VARCHAR#,
+                #definition:VARCHAR#,
+                #disease_status:NUMERIC#,
+                #type:NUMERIC#,
+                #_enable:NUMERIC#,
+                #create_time:TIMESTAMP#,
+                #creator:NUMERIC#,
+               	#last_update_time:TIMESTAMP#,
+                #last_updateor:NUMERIC#,
+                #review_time:TIMESTAMP#,
+                #reviewor:NUMERIC#,
+                #grade:VARCHAR#,
+                #memo:VARCHAR#,
+                #import_no:VARCHAR#,
+                #mapper_user:VARCHAR#,
+                #mapper_time:TIMESTAMP#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新疾病对照表-->
+    <update id="update" parameterClass="disease_mapper">
+        <![CDATA[ update disease_mapper ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.org_id">
+                <![CDATA[ org_id = #org_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.disease_id">
+                <![CDATA[ disease_id = #disease_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_disease_id">
+                <![CDATA[ org_disease_id = #org_disease_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_disease_name">
+                <![CDATA[ org_disease_name = #org_disease_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_icd_10">
+                <![CDATA[ org_icd_10 = #org_icd_10:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.definition">
+                <![CDATA[ definition = #definition:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.disease_status">
+                <![CDATA[ disease_status = #disease_status:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.type">
+                <![CDATA[ type = #type:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields._enable">
+                <![CDATA[ _enable = #_enable:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_updateor">
+                <![CDATA[ last_updateor = #last_updateor:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.review_time">
+                <![CDATA[ review_time = #review_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.reviewor">
+                <![CDATA[ reviewor = #reviewor:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <!-- <isPropertyAvailable prepend="," property="fields.grade">
+                <![CDATA[ grade = #grade:VARCHAR# ]]>
+            </isPropertyAvailable> -->
+            <isPropertyAvailable prepend="," property="fields.import_no">
+                <![CDATA[ import_no = #import_no:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.mapper_user">
+                <![CDATA[ mapper_user = #mapper_user:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.mapper_time">
+                <![CDATA[ mapper_time = #mapper_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+           <isPropertyAvailable prepend="," property="fields.memo">
+                <![CDATA[ memo = #memo:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除疾病对照表-->
+    <delete id="delete" parameterClass="disease_mapper">
+        <![CDATA[
+            delete from disease_mapper where id = #id#
+        ]]>
+    </delete>
+
+	<!-- 储存过程对照疾病 -->
+	<!-- <parameterMap class="map" id="diseaseSwapParam">    
+	    <parameter property="orgId"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>
+	    <parameter property="createTime"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>    
+	    <parameter property="result"  javaType="java.lang.Integer" jdbcType="int" mode="OUT"/>    
+	</parameterMap>
+	<procedure id="autoMatch" parameterMap="diseaseSwapParam">
+		 <![CDATA[
+            {call diseaseMaper(?,?,?)}
+        ]]>
+	</procedure> -->
+	
+	<!-- 储存过程对照疾病 -->
+	<parameterMap class="map" id="diseaseSwapParam">    
+	    <parameter property="orgId"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>
+	    <parameter property="importNo"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>    
+	    <parameter property="result"  javaType="java.lang.Integer" jdbcType="int" mode="OUT"/>    
+	</parameterMap>
+	<procedure id="autoMatch" parameterMap="diseaseSwapParam">
+		 <![CDATA[
+           CALL diseaseMaper(?,?,?)
+        ]]>
+	</procedure>
+	
+</sqlMap>

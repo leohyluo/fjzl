@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+转诊记录
+User: Created by auto build
+Date: 2017-03-10 13:36:27
+-->
+<sqlMap namespace="referral_record">
+
+    <typeAlias alias="referral_record" type="com.zhys.fjzl.domain.Record" />
+
+    <!--转诊记录分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--id最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--id等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+            <!--id最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构编码最小值-->
+            <!-- <isNotEmpty prepend="and" property="org_id_min">
+                <![CDATA[ org_id >= #org_id_min# ]]>
+            </isNotEmpty> -->
+            <!--机构编码等于-->
+            <isNotEmpty prepend="and" property="org_id">
+                <![CDATA[ instr(org_id, #org_id#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构编码最大值-->
+            <!-- <isNotEmpty prepend="and" property="org_id_max">
+                <![CDATA[ org_id <= #org_id_max# ]]>
+            </isNotEmpty> -->
+            <!--目标单位-->
+            <isNotEmpty prepend="and" property="target_unit">
+                <![CDATA[ instr(target_unit, #target_unit#) > 0 ]]>
+            </isNotEmpty>
+            <!--双向转诊单-患者姓名-->
+            <isNotEmpty prepend="and" property="target_name">
+                <![CDATA[ instr(target_name, #target_name#) > 0 ]]>
+            </isNotEmpty>
+            <!--双向转诊单-患者性别-->
+            <isNotEmpty prepend="and" property="target_gender">
+                <![CDATA[ instr(target_gender, #target_gender#) > 0 ]]>
+            </isNotEmpty>
+            <!--双向转诊单-患者年龄-->
+            <isNotEmpty prepend="and" property="target_age">
+                <![CDATA[ instr(target_age, #target_age#) > 0 ]]>
+            </isNotEmpty>
+            <!--初步诊断-->
+            <isNotEmpty prepend="and" property="diagnosis">
+                <![CDATA[ instr(diagnosis, #diagnosis#) > 0 ]]>
+            </isNotEmpty>
+            <!--现病史-->
+            <isNotEmpty prepend="and" property="history_illness">
+                <![CDATA[ instr(history_illness, #history_illness#) > 0 ]]>
+            </isNotEmpty>
+            <!--转出原因-->
+            <isNotEmpty prepend="and" property="reason">
+                <![CDATA[ instr(reason, #reason#) > 0 ]]>
+            </isNotEmpty>
+            <!--既往史-->
+            <isNotEmpty prepend="and" property="past_history">
+                <![CDATA[ instr(past_history, #past_history#) > 0 ]]>
+            </isNotEmpty>
+            <!--转诊医生-->
+            <isNotEmpty prepend="and" property="target_doctor">
+                <![CDATA[ instr(target_doctor, #target_doctor#) > 0 ]]>
+            </isNotEmpty>
+            <!--联系电话-->
+            <isNotEmpty prepend="and" property="target_mobile">
+                <![CDATA[ instr(target_mobile, #target_mobile#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构名称-->
+            <isNotEmpty prepend="and" property="target_org_name">
+                <![CDATA[ instr(target_org_name, #target_org_name#) > 0 ]]>
+            </isNotEmpty>
+            <!--双向转诊单-日期-->
+            <isNotEmpty prepend="and" property="target_date">
+                <![CDATA[ instr(target_date, #target_date#) > 0 ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--转诊记录分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from referral_record
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--转诊记录分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="referral_record">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                org_id,
+                target_unit,
+                target_name,
+                target_gender,
+                target_age,
+                diagnosis,
+                history_illness,
+                reason,
+                past_history,
+                target_doctor,
+                target_mobile,
+                target_org_name,
+                target_date,
+                create_time,
+                last_update_time
+            from referral_record
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建转诊记录-->
+    <insert id="create" parameterClass="referral_record">
+        <![CDATA[
+            insert into referral_record(
+                org_id,
+                target_unit,
+                target_name,
+                target_gender,
+                target_age,
+                diagnosis,
+                history_illness,
+                reason,
+                past_history,
+                target_doctor,
+                target_mobile,
+                target_org_name,
+                target_date,
+                create_time,
+                last_update_time
+            ) values (
+                #org_id:VARCHAR#,
+                #target_unit:VARCHAR#,
+                #target_name:VARCHAR#,
+                #target_gender:VARCHAR#,
+                #target_age:VARCHAR#,
+                #diagnosis:VARCHAR#,
+                #history_illness:VARCHAR#,
+                #reason:VARCHAR#,
+                #past_history:VARCHAR#,
+                #target_doctor:VARCHAR#,
+                #target_mobile:VARCHAR#,
+                #target_org_name:VARCHAR#,
+                #target_date:VARCHAR#,
+                #create_time:TIMESTAMP#,
+                #last_update_time:TIMESTAMP#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新转诊记录-->
+    <update id="update" parameterClass="referral_record">
+        <![CDATA[ update referral_record ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.org_id">
+                <![CDATA[ org_id = #org_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_unit">
+                <![CDATA[ target_unit = #target_unit:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_name">
+                <![CDATA[ target_name = #target_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_gender">
+                <![CDATA[ target_gender = #target_gender:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_age">
+                <![CDATA[ target_age = #target_age:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.diagnosis">
+                <![CDATA[ diagnosis = #diagnosis:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.history_illness">
+                <![CDATA[ history_illness = #history_illness:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.reason">
+                <![CDATA[ reason = #reason:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.past_history">
+                <![CDATA[ past_history = #past_history:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_doctor">
+                <![CDATA[ target_doctor = #target_doctor:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_mobile">
+                <![CDATA[ target_mobile = #target_mobile:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_org_name">
+                <![CDATA[ target_org_name = #target_org_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.target_date">
+                <![CDATA[ target_date = #target_date:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除转诊记录-->
+    <delete id="delete" parameterClass="referral_record">
+        <![CDATA[
+            delete from referral_record where id = #id#
+        ]]>
+    </delete>
+
+</sqlMap>

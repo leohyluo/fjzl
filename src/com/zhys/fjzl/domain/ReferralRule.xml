@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+规则表
+User: Created by auto build
+Date: 2017-02-06 09:22:38
+-->
+<sqlMap namespace="ebm_referral_rule">
+
+    <typeAlias alias="ebm_referral_rule" type="com.zhys.fjzl.domain.ReferralRule" />
+
+    <!--规则表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--主键最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--主键等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+            <!--主键最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--名称-->
+            <isNotEmpty prepend="and" property="name">
+                <![CDATA[ instr(name, #name#) > 0 ]]>
+            </isNotEmpty>
+            <!--规则编号最小值-->
+            <isNotEmpty prepend="and" property="code_min">
+                <![CDATA[ code >= #code_min# ]]>
+            </isNotEmpty>
+            <!--规则编号等于-->
+            <isNotEmpty prepend="and" property="code">
+                <![CDATA[ code = #code# ]]>
+            </isNotEmpty>
+            <!--规则编号最大值-->
+            <isNotEmpty prepend="and" property="code_max">
+                <![CDATA[ code <= #code_max# ]]>
+            </isNotEmpty>
+            <!--创建者-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ instr(creator, #creator#) > 0 ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改者-->
+            <isNotEmpty prepend="and" property="last_update_user">
+                <![CDATA[ instr(last_update_user, #last_update_user#) > 0 ]]>
+            </isNotEmpty>
+            <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--规则表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from ebm_referral_rule
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--规则表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="ebm_referral_rule">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                name,
+                code,
+                creator,
+                create_time,
+                last_update_user,
+                last_update_time
+            from ebm_referral_rule
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建规则表-->
+    <insert id="create" parameterClass="ebm_referral_rule">
+        <![CDATA[
+            insert into ebm_referral_rule(
+                name,
+                code,
+                creator,
+                create_time,
+                last_update_user,
+                last_update_time
+            ) values (
+                #name:VARCHAR#,
+                #code:NUMERIC#,
+                #creator:VARCHAR#,
+                #create_time:TIMESTAMP#,
+                #last_update_user:VARCHAR#,
+                #last_update_time:TIMESTAMP#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+        <sql id="selectSql">
+        <![CDATA[
+               select
+                id,
+                name,
+                code
+            from ebm_referral_rule
+        ]]>
+    </sql>
+        <!--查询单条菜单记录-->
+    <select id="query" parameterClass="ebm_referral_rule" resultClass="ebm_referral_rule">
+        <include refid="selectSql"/>
+    </select>
+
+    <!--更新规则表-->
+    <update id="update" parameterClass="ebm_referral_rule">
+        <![CDATA[ update ebm_referral_rule ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.name">
+                <![CDATA[ name = #name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.code">
+                <![CDATA[ code = #code:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_user">
+                <![CDATA[ last_update_user = #last_update_user:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除规则表-->
+    <delete id="delete" parameterClass="ebm_referral_rule">
+        <![CDATA[
+            delete from ebm_referral_rule where id = #id#
+        ]]>
+    </delete>
+
+</sqlMap>

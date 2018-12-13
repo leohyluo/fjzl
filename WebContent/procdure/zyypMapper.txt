@@ -1,0 +1,35 @@
+
+-- 中药饮片对照储存过程
+drop PROCEDURE if exists zyyp_mapper;
+create procedure zyyp_mapper(
+	in orgId varchar(20),
+  in importNo varchar(64),
+  out effectRows int
+)
+	BEGIN
+		DECLARE _error INT DEFAULT 0;
+		DECLARE done INT DEFAULT FALSE;
+		declare ebm_drug_id varchar(20) default null;
+		declare _id varchar(20) default null;
+		declare _org_drug_name varchar(20) default null;				
+		-- 根据导入批号找出未对照的中成药集合	
+		declare cursor1 cursor for select id,org_drug_name from drug_mapper where type = 3 and (drug_status = 0 or drug_status is null) and org_id = orgId and import_no = importNo;
+		
+		DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET _error=1;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;			
+
+		open cursor1;
+			loop1:loop
+				fetch cursor1 into _id,_org_drug_name;
+				-- 根据His药品名称去匹配知识库的中药饮片				
+				select id_ into ebm_drug_id from ebm_b_chdrug where name_ = _org_drug_name limit 0,1;			
+				if ebm_drug_id is not null THEN
+					update drug_mapper set drug_status = 1,drug_id=ebm_drug_id,mapper_time=now() where id=_id;
+					set effectRows = effectRows + 1;
+				end if;
+				if done then
+					leave loop1;
+				end if;
+			end loop;
+		close cursor1;
+	END

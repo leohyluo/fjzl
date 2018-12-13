@@ -1,0 +1,41 @@
+-- 导西药
+INSERT INTO ebm_western_medicine (
+	drug_code,drug_name,dosage_form,_usage,charge_type,charge_grade,atc1,atc2,atc3,atc4,grade
+) SELECT
+	t.smart_code,
+	t.smart_name,
+	t.smart_form,
+	t.useage,
+	t.fee_class,
+	t.fee_grade,
+	t.atc1,
+	t.atc2,
+	t.atc3,
+	t.atc4,
+	t.hos_grade
+FROM
+	t_prj_grade_treat_sz t
+	
+WHERE
+	t.fee_class = '西药';
+	
+	
+-- 导中成药(包含中药饮片)
+INSERT INTO ebm_b_cpdrug (
+	drug_code,cpdrugname,standard,cusage,charge_type,charge_grade,atc1,atc2,atc3,atc4,grade
+) SELECT
+	t.smart_code,
+	t.smart_name,
+	t.smart_form,
+	t.useage,
+	t.fee_class,
+	t.fee_grade,
+	t.atc1,
+	t.atc2,
+	t.atc3,
+	t.atc4,
+	t.hos_grade
+FROM
+	t_prj_grade_treat_sz t	
+WHERE
+	t.fee_class = '中成药';	

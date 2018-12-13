@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="system.xsd">
+    <!--系统设置 start-->
+    <parameter>
+        <description>系统名称</description>
+        <key>systemName</key>
+        <value>循证医学分级诊疗管理平台</value>
+    </parameter>
+
+    <parameter>
+        <description>系统代码</description>
+        <key>systemCode</key>
+        <value>zhys</value>
+    </parameter>
+
+    <parameter>
+        <description>验证码登录</description>
+        <key>checkRandomCode</key>
+        <value>false</value>
+    </parameter>
+
+    <!--文件上传设置 start-->
+    <parameter>
+        <description>图片上传目录</description>
+        <key>tempDirectory</key>
+        <value>/pictures</value>
+    </parameter>
+
+    <parameter>
+        <description>文件上传内存占用大小</description>
+        <key>maxMemorySize</key>
+        <value>10240</value>
+    </parameter>
+
+    <parameter>
+        <description>文件上传最大尺寸</description>
+        <key>maxRequestSize</key>
+        <value>1024000</value>
+    </parameter>
+
+    <parameter>
+        <description>文件上传字符集</description>
+        <key>uriEncoding</key>
+        <value>UTF-8</value>
+    </parameter>
+    <!--文件上传设置 end-->
+
+    <!--报表打印设置 start-->
+    <parameter>
+        <description>报表applet包名称</description>
+        <key>reportApplet</key>
+        <value>PrintApplet.jar</value>
+    </parameter>
+
+    <parameter>
+        <description>报表编译参数</description>
+        <key>reportComplie</key>
+        <value>true</value>
+    </parameter>
+
+    <parameter>
+        <description>报表文件路径参数</description>
+        <key>reportPath</key>
+        <value>/WEB-INF/reports</value>
+    </parameter>
+    <!--报表打印设置 end-->
+    
+    <parameter>
+        <description>最大导出数量</description>
+        <key>exportMaxRows</key>
+        <value>50000</value>
+    </parameter>
+</application>

@@ -1,0 +1,36 @@
+
+-- 中成药对照储存过程
+drop PROCEDURE if exists zcy_mapper;
+create procedure zcy_mapper(
+	in orgId varchar(20),
+  in importNo varchar(64),
+  out effectRows int
+)
+	BEGIN
+		DECLARE _error INT DEFAULT 0;
+		DECLARE done INT DEFAULT FALSE;
+		declare ebm_drug_id varchar(20) default null;
+		declare _id varchar(20) default null;
+		declare _org_drug_name varchar(20) default null;		
+		declare _org_dosage_form varchar(100) default null;
+		-- 根据导入批号找出未对照的中成药集合	
+		declare cursor1 cursor for select id,org_drug_name,dosage_form from drug_mapper where type = 2 and (drug_status = 0 or drug_status is null) and org_id = orgId and import_no = importNo;
+		
+		DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET _error=1;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;			
+
+		open cursor1;
+			loop1:loop
+				fetch cursor1 into _id,_org_drug_name,_org_dosage_form;
+				-- 根据His药品名称,剂型去匹配知识库的中成药
+				select id_ into ebm_drug_id from ebm_b_cpdrug where cpdrugname = _org_drug_name and standard = _org_dosage_form limit 0,1;				
+				if ebm_drug_id is not null THEN
+					update drug_mapper set drug_status = 1,drug_id=ebm_drug_id where id=_id;
+					set effectRows = effectRows + 1;
+				end if;
+				if done then
+					leave loop1;
+				end if;
+			end loop;
+		close cursor1;
+	END

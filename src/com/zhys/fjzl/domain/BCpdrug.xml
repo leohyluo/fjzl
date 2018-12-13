@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+中成药表
+User: Created by auto build
+Date: 2016-12-19 16:12:11
+-->
+<sqlMap namespace="ebm_b_cpdrug">
+
+    <typeAlias alias="ebm_b_cpdrug" type="com.zhys.fjzl.domain.BCpdrug" />
+
+    <!--中成药表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--表id等于-->
+            <isNotEmpty prepend="and" property="id_">
+                <![CDATA[ id_ = #id_# ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="id_other">
+                <![CDATA[ id_ != #id_other# ]]>
+            </isNotEmpty>
+            <!--药品名称-->
+            <isNotEmpty prepend="and" property="drug_code">
+                <![CDATA[ instr(drug_code, #drug_code#) > 0 ]]>
+            </isNotEmpty>
+            <!--药品名称-->
+            <isNotEmpty prepend="and" property="cpdrugname">
+               <![CDATA[ instr(cpdrugname, #cpdrugname#) > 0]]>
+            </isNotEmpty>
+                <isNotEmpty prepend="and" property="cpdrugname_eq">
+               <![CDATA[ cpdrugname = #cpdrugname_eq# ]]>
+            </isNotEmpty>
+            <!--禁忌-->
+            <isNotEmpty prepend="and" property="taboo">
+                <![CDATA[ instr(taboo, #taboo#) > 0 ]]>
+            </isNotEmpty>
+            <!--注意事项-->
+            <isNotEmpty prepend="and" property="precautions">
+                <![CDATA[ instr(precautions, #precautions#) > 0 ]]>
+            </isNotEmpty>
+            <!--用法用量-->
+            <isNotEmpty prepend="and" property="cusage">
+                <![CDATA[ instr(cusage, #cusage#) > 0 ]]>
+            </isNotEmpty>
+            <!--剂型规格-->
+            <isNotEmpty prepend="and" property="standard">
+                <![CDATA[  instr(standard, #standard#) > 0  ]]>
+            </isNotEmpty>
+              <isNotEmpty prepend="and" property="standard_eq">
+                <![CDATA[ standard = #standard_eq# ]]>
+            </isNotEmpty>
+            <!---->
+            <isNotEmpty prepend="and" property="typeid">
+                <![CDATA[ instr(typeid, #typeid#) > 0 ]]>
+            </isNotEmpty>
+            <!--助记符-->
+            <isNotEmpty prepend="and" property="symbol">
+                <![CDATA[ instr(symbol, #symbol#) > 0 ]]>
+            </isNotEmpty>
+            <!--收费类别-->
+            <isNotEmpty prepend="and" property="charge_type">
+                <![CDATA[ instr(charge_type, #charge_type#) > 0 ]]>
+            </isNotEmpty>
+            <!--收费项目等级最小值-->
+            <isNotEmpty prepend="and" property="charge_grade_min">
+                <![CDATA[ charge_grade >= #charge_grade_min# ]]>
+            </isNotEmpty>
+            <!--收费项目等级等于-->
+            <isNotEmpty prepend="and" property="charge_grade">
+                <![CDATA[ charge_grade = #charge_grade# ]]>
+            </isNotEmpty>
+            <!--收费项目等级最大值-->
+            <isNotEmpty prepend="and" property="charge_grade_max">
+                <![CDATA[ charge_grade <= #charge_grade_max# ]]>
+            </isNotEmpty>
+            <!--药品等级最小值-->
+            <isNotEmpty prepend="and" property="grade_min">
+                <![CDATA[ grade >= #grade_min# ]]>
+            </isNotEmpty>
+            <!--药品等级等于-->
+            <isNotEmpty prepend="and" property="grade">
+                <![CDATA[ grade = #grade# ]]>
+            </isNotEmpty>
+            <!--药品等级最大值-->
+            <isNotEmpty prepend="and" property="grade_max">
+                <![CDATA[ grade <= #grade_max# ]]>
+            </isNotEmpty>
+            <!--数据来源-->
+            <isNotEmpty prepend="and" property="data_sources">
+                <![CDATA[ instr(data_sources, #data_sources#) > 0 ]]>
+            </isNotEmpty>
+            <!--审核状态最小值-->
+            <isNotEmpty prepend="and" property="cpdrug_status_min">
+                <![CDATA[ cpdrug_status >= #cpdrug_status_min# ]]>
+            </isNotEmpty>
+            <!--审核状态等于-->
+            <isNotEmpty prepend="and" property="cpdrug_status">
+                <![CDATA[ cpdrug_status = #cpdrug_status# ]]>
+            </isNotEmpty>
+            <!--审核状态最大值-->
+            <isNotEmpty prepend="and" property="cpdrug_status_max">
+                <![CDATA[ cpdrug_status <= #cpdrug_status_max# ]]>
+            </isNotEmpty>
+              <!--是否启用最小值-->
+            <isNotEmpty prepend="and" property="_enable_min">
+                <![CDATA[ _enable >= #_enable_min# ]]>
+            </isNotEmpty>
+            <!--是否启用等于-->
+            <isNotEmpty prepend="and" property="_enable">
+                <![CDATA[ _enable = #_enable# ]]>
+            </isNotEmpty>
+            <!--是否启用最大值-->
+            <isNotEmpty prepend="and" property="_enable_max">
+                <![CDATA[ _enable <= #_enable_max# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建人最小值-->
+            <isNotEmpty prepend="and" property="creator_min">
+                <![CDATA[ creator >= #creator_min# ]]>
+            </isNotEmpty>
+            <!--创建人等于-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ creator = #creator# ]]>
+            </isNotEmpty>
+            <!--创建人最大值-->
+            <isNotEmpty prepend="and" property="creator_max">
+                <![CDATA[ creator <= #creator_max# ]]>
+            </isNotEmpty>
+            <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改人最小值-->
+            <isNotEmpty prepend="and" property="last_updateor_min">
+                <![CDATA[ last_updateor >= #last_updateor_min# ]]>
+            </isNotEmpty>
+            <!--最后修改人等于-->
+            <isNotEmpty prepend="and" property="last_updateor">
+                <![CDATA[ last_updateor = #last_updateor# ]]>
+            </isNotEmpty>
+            <!--最后修改人最大值-->
+            <isNotEmpty prepend="and" property="last_updateor_max">
+                <![CDATA[ last_updateor <= #last_updateor_max# ]]>
+            </isNotEmpty>
+            <!--审核时间开始-->
+            <isNotEmpty prepend="and" property="review_time_begin">
+                <![CDATA[ review_time >= str_to_date(#review_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核时间结束-->
+            <isNotEmpty prepend="and" property="review_time_end">
+                <![CDATA[ review_time <= str_to_date('$review_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核人最小值-->
+            <isNotEmpty prepend="and" property="reviewor_min">
+                <![CDATA[ reviewor >= #reviewor_min# ]]>
+            </isNotEmpty>
+            <!--审核人等于-->
+            <isNotEmpty prepend="and" property="reviewor">
+                <![CDATA[ reviewor = #reviewor# ]]>
+            </isNotEmpty>
+            <!--审核人最大值-->
+            <isNotEmpty prepend="and" property="reviewor_max">
+                <![CDATA[ reviewor <= #reviewor_max# ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id_ in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--中成药表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from ebm_b_cpdrug
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--中成药表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="ebm_b_cpdrug">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id_,
+                drug_code,
+                cpdrugname,
+                ofdrug,
+                cfunction,
+                prescriptionanalysis,
+                clinicalapplication,
+                pharmacology,
+                adyersereaction,
+                taboo,
+                precautions,
+                cusage,
+                standard,
+                typeid,
+                symbol,
+                charge_type,
+                charge_grade,
+                atc1,
+                atc2,
+                atc3,
+                atc4,
+                grade,
+                data_sources,
+                cpdrug_status,
+                 _enable,
+                create_time,
+                create_time,
+                b.su_name as creatorName,
+                last_update_time,
+                c.su_name as last_updateorName,
+                review_time,
+                d.su_name as revieworName
+            from ebm_b_cpdrug as cp left JOIN
+			sys_user b on cp.creator = b.su_id
+			LEFT JOIN sys_user c on cp.last_updateor = c.su_id
+			LEFT JOIN sys_user d on cp.reviewor = d.su_id
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建中成药表-->
+    <insert id="create" parameterClass="ebm_b_cpdrug">
+        <![CDATA[
+            insert into ebm_b_cpdrug(
+            	drug_code,
+                cpdrugname,
+                ofdrug,
+                cfunction,
+                prescriptionanalysis,
+                clinicalapplication,
+                pharmacology,
+                adyersereaction,
+                taboo,
+                precautions,
+                cusage,
+                standard,
+                typeid,
+                symbol,
+                charge_type,
+                charge_grade,
+                atc1,
+                atc2,
+                atc3,
+                atc4,
+                grade,
+                data_sources,
+                cpdrug_status,
+                _enable,
+                create_time,
+                creator,
+                last_update_time,
+                last_updateor,
+                review_time,
+                reviewor
+            ) values (
+            	#drug_code:VARCHAR#,
+                #cpdrugname:VARCHAR#,
+                #ofdrug:TEXT#,
+                #cfunction:TEXT#,
+                #prescriptionanalysis:TEXT#,
+                #clinicalapplication:TEXT#,
+                #pharmacology:TEXT#,
+                #adyersereaction:TEXT#,
+                #taboo:VARCHAR#,
+                #precautions:VARCHAR#,
+                #cusage:VARCHAR#,
+                #standard:VARCHAR#,
+                #typeid:VARCHAR#,
+                #symbol:VARCHAR#,
+                #charge_type:VARCHAR#,
+                #charge_grade:NUMERIC#,
+                #atc1:VARCHAR#,
+                #atc2:VARCHAR#,
+                #atc3:VARCHAR#,
+                #atc4:VARCHAR#,
+                #grade:NUMERIC#,
+                #data_sources:VARCHAR#,
+                #cpdrug_status:NUMERIC#,
+                #_enable:NUMERIC#,
+                #create_time:TIMESTAMP#,
+                #creator:NUMERIC#,
+                #last_update_time:TIMESTAMP#,
+                #last_updateor:NUMERIC#,
+                #review_time:TIMESTAMP#,
+                #reviewor:NUMERIC#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id_" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id_
+        </selectKey>
+    </insert>
+
+    <!--更新中成药表-->
+    <update id="update" parameterClass="ebm_b_cpdrug">
+        <![CDATA[ update ebm_b_cpdrug ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.cpdrugname">
+                <![CDATA[ cpdrugname = #cpdrugname:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.ofdrug">
+                <![CDATA[ ofdrug = #ofdrug:TEXT# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.cfunction">
+                <![CDATA[ cfunction = #cfunction:TEXT# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.prescriptionanalysis">
+                <![CDATA[ prescriptionanalysis = #prescriptionanalysis:TEXT# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.clinicalapplication">
+                <![CDATA[ clinicalapplication = #clinicalapplication:TEXT# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.pharmacology">
+                <![CDATA[ pharmacology = #pharmacology:TEXT# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.adyersereaction">
+                <![CDATA[ adyersereaction = #adyersereaction:TEXT# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.taboo">
+                <![CDATA[ taboo = #taboo:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.precautions">
+                <![CDATA[ precautions = #precautions:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.cusage">
+                <![CDATA[ cusage = #cusage:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.standard">
+                <![CDATA[ standard = #standard:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.typeid">
+                <![CDATA[ typeid = #typeid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.symbol">
+                <![CDATA[ symbol = #symbol:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.charge_type">
+                <![CDATA[ charge_type = #charge_type:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.charge_grade">
+                <![CDATA[ charge_grade = #charge_grade:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.grade">
+                <![CDATA[ grade = #grade:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.data_sources">
+                <![CDATA[ data_sources = #data_sources:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.cpdrug_status">
+                <![CDATA[ cpdrug_status = #cpdrug_status:NUMERIC# ]]>
+            </isPropertyAvailable>
+                      <isPropertyAvailable prepend="," property="fields._enable">
+                <![CDATA[ _enable = #_enable:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_updateor">
+                <![CDATA[ last_updateor = #last_updateor:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.review_time">
+                <![CDATA[ review_time = #review_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.reviewor">
+                <![CDATA[ reviewor = #reviewor:NUMERIC# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id_ = #id_#  ]]>
+    </update>
+
+    <!--删除中成药表-->
+    <delete id="delete" parameterClass="ebm_b_cpdrug">
+        <![CDATA[
+            delete from ebm_b_cpdrug where id_ = #id_#
+        ]]>
+    </delete>
+
+</sqlMap>

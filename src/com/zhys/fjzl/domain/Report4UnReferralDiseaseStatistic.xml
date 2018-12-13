@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+
+User: Created by auto build
+Date: 2017-06-20 08:37:17
+-->
+<sqlMap namespace="unReferralDiseaseStatistic">
+
+    <sql id="report_where">
+    	<dynamic prepend="where">
+    		<isNotEmpty prepend="and" property="examResult">
+    			<![CDATA[ fjzl_api_record.examResult = #examResult# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="referralFlag">
+    			<![CDATA[ fjzl_api_record.referralFlag = #referralFlag# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="zndz_org_id">
+    			<![CDATA[ disease_mapper.org_id = #zndz_org_id# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="createtime_begin">
+    			 <![CDATA[ fjzl_api_record.create_time >= str_to_date(#createtime_begin#,'%Y-%m-%d %T') ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="createtime_end">
+    			<![CDATA[ fjzl_api_record.create_time <= str_to_date('$createtime_end$ 23:59:59','%Y-%m-%d %T') ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="orgid">
+    			<![CDATA[ fjzl_api_record.orgId = #orgid# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="org_id_arr">
+    			<![CDATA[ fjzl_api_record.orgId in]]>
+    			<iterate open="(" conjunction="," property="org_id_arr" close=")">  
+                    #org_id_arr[]#  
+                </iterate> 
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="department">
+    			<![CDATA[ fjzl_api_record.department = #department# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="doctorName">
+    			<![CDATA[ fjzl_api_record.doctorName = #doctorName# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="doctorGrade">
+    			<![CDATA[ fjzl_api_record.doctorGrade = #doctorGrade# ]]>
+    		</isNotEmpty>
+    	</dynamic>
+    </sql>
+
+	<!--建议转诊而未转诊的疾病统计报表-->
+    <select id="main" parameterClass="PageParam" resultClass="java.util.HashMap">
+        <![CDATA[
+			SELECT
+				fjzl_api_record.hisDiseaseIds as 'his_disease_id',
+				disease_mapper.org_disease_name as 'his_disease_name',
+				COUNT(1) as 'num'
+			FROM
+				fjzl_api_record 
+			INNER JOIN disease_mapper on fjzl_api_record.hisDiseaseIds = disease_mapper.org_disease_id  
+        ]]>
+        <include refid="report_where"/>
+        <![CDATA[ GROUP BY 	fjzl_api_record.hisDiseaseIds]]>
+        <![CDATA[ ORDER BY num DESC]]>
+        <![CDATA[ limit 0,10]]>
+    </select>
+</sqlMap>

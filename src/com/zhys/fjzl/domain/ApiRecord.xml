@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+
+User: Created by auto build
+Date: 2017-06-20 08:37:17
+-->
+<sqlMap namespace="fjzl_api_record">
+
+    <typeAlias alias="fjzl_api_record" type="com.zhys.fjzl.domain.ApiRecord" />
+
+    <!--分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+            <!--最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构id-->
+            <isNotEmpty prepend="and" property="orgid">
+                <![CDATA[ instr(orgid, #orgid#) > 0 ]]>
+            </isNotEmpty>
+            <!--医生编号-->
+            <isNotEmpty prepend="and" property="doctorcode">
+                <![CDATA[ instr(doctorcode, #doctorcode#) > 0 ]]>
+            </isNotEmpty>
+            <!--医生姓名-->
+            <isNotEmpty prepend="and" property="doctorname">
+                <![CDATA[ instr(doctorname, #doctorname#) > 0 ]]>
+            </isNotEmpty>
+            <!--医生联系方式-->
+            <isNotEmpty prepend="and" property="doctormobile">
+                <![CDATA[ instr(doctormobile, #doctormobile#) > 0 ]]>
+            </isNotEmpty>
+            <!--患者姓名-->
+            <isNotEmpty prepend="and" property="patientname">
+                <![CDATA[ instr(patientname, #patientname#) > 0 ]]>
+            </isNotEmpty>
+            <!--患者出生日期-->
+            <isNotEmpty prepend="and" property="patientbirth">
+                <![CDATA[ instr(patientbirth, #patientbirth#) > 0 ]]>
+            </isNotEmpty>
+            <!--患者性别-->
+            <isNotEmpty prepend="and" property="patientgener">
+                <![CDATA[ instr(patientgener, #patientgener#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构端疾病id-->
+            <isNotEmpty prepend="and" property="hisdiseaseids">
+                <![CDATA[ instr(hisdiseaseids, #hisdiseaseids#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构端药品id-->
+            <isNotEmpty prepend="and" property="hisdrugids">
+                <![CDATA[ instr(hisdrugids, #hisdrugids#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构端药品类型-->
+            <isNotEmpty prepend="and" property="hisdrugtypes">
+                <![CDATA[ instr(hisdrugtypes, #hisdrugtypes#) > 0 ]]>
+            </isNotEmpty>
+            <!--机构检查id-->
+            <isNotEmpty prepend="and" property="hischeckids">
+                <![CDATA[ instr(hischeckids, #hischeckids#) > 0 ]]>
+            </isNotEmpty>
+            <!--最小值-->
+            <isNotEmpty prepend="and" property="examresult_min">
+                <![CDATA[ examresult >= #examresult_min# ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="examresult">
+                <![CDATA[ examresult = #examresult# ]]>
+            </isNotEmpty>
+            <!--最大值-->
+            <isNotEmpty prepend="and" property="examresult_max">
+                <![CDATA[ examresult <= #examresult_max# ]]>
+            </isNotEmpty>
+            <!--可转诊机构列表-->
+            <isNotEmpty prepend="and" property="orglist">
+                <![CDATA[ instr(orglist, #orglist#) > 0 ]]>
+            </isNotEmpty>
+            <!--最小值-->
+            <isNotEmpty prepend="and" property="referralflag_min">
+                <![CDATA[ referralflag >= #referralflag_min# ]]>
+            </isNotEmpty>
+            <!--等于-->
+            <isNotEmpty prepend="and" property="referralflag">
+                <![CDATA[ referralflag = #referralflag# ]]>
+            </isNotEmpty>
+            <!--最大值-->
+            <isNotEmpty prepend="and" property="referralflag_max">
+                <![CDATA[ referralflag <= #referralflag_max# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="createtime_begin">
+                <![CDATA[ createtime >= str_to_date(#createtime_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="createtime_end">
+                <![CDATA[ createtime <= str_to_date('$createtime_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+    
+    <sql id="report_where">
+    	<dynamic prepend="where">
+    		<isNotEmpty prepend="and" property="examResult">
+    			<![CDATA[ a.examResult = #examResult# ]]>	
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="createtime_begin">
+    			 <![CDATA[ a.createtime >= str_to_date(#createtime_begin#,'%Y-%m-%d %T') ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="createtime_end">
+    			<![CDATA[ a.createtime <= str_to_date('$createtime_end$ 23:59:59','%Y-%m-%d %T') ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="orgid">
+    			<![CDATA[ a.orgId = #orgid# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="org_id_arr">
+    			<![CDATA[ a.orgId in]]>
+    			<iterate open="(" conjunction="," property="org_id_arr" close=")">  
+                    #org_id_arr[]#  
+                </iterate> 
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="department">
+    			<![CDATA[ a.department = #department# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="doctorName">
+    			<![CDATA[ a.doctorName = #doctorName# ]]>
+    		</isNotEmpty>
+    		<isNotEmpty prepend="and" property="doctorGrade">
+    			<![CDATA[ a.doctorGrade = #doctorGrade# ]]>
+    		</isNotEmpty>
+    	</dynamic>
+    </sql>
+
+    <!--分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from fjzl_api_record
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="fjzl_api_record">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                orgid,
+                doctorcode,
+                doctorname,
+                doctormobile,
+                patientname,
+                patientbirth,
+                patientgener,
+                hisdiseaseids,
+                hisdrugids,
+                hisdrugtypes,
+                hischeckids,
+                examresult,
+                orglist,
+                referralflag,
+                createtime
+            from fjzl_api_record
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建-->
+    <insert id="create" parameterClass="fjzl_api_record">
+        <![CDATA[
+            insert into fjzl_api_record(
+                orgid,
+                doctorcode,
+                doctorname,
+                department,
+                doctorGrade,
+                doctormobile,
+                patientname,
+                patientbirth,
+                patientgener,
+                hisdiseaseids,
+                hisdrugids,
+                hisdrugtypes,
+                hischeckids,
+                examresult,
+                referralType,
+                orglist,
+                referralflag,
+                createtime
+            ) values (
+                #orgid:VARCHAR#,
+                #doctorcode:VARCHAR#,
+                #doctorname:VARCHAR#,
+                #department:VARCHAR#,
+                #doctorGrade:VARCHAR#,
+                #doctormobile:VARCHAR#,
+                #patientname:VARCHAR#,
+                #patientbirth:VARCHAR#,
+                #patientgener:VARCHAR#,
+                #hisdiseaseids:VARCHAR#,
+                #hisdrugids:VARCHAR#,
+                #hisdrugtypes:VARCHAR#,
+                #hischeckids:VARCHAR#,
+                #examresult:NUMERIC#,
+                #referralType:NUMERIC#,
+                #orglist:VARCHAR#,
+                #referralflag:NUMERIC#,
+                #createtime:TIMESTAMP#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新-->
+    <update id="update" parameterClass="fjzl_api_record">
+        <![CDATA[ update fjzl_api_record ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.orgid">
+                <![CDATA[ orgid = #orgid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.doctorcode">
+                <![CDATA[ doctorcode = #doctorcode:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.doctorname">
+                <![CDATA[ doctorname = #doctorname:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.doctormobile">
+                <![CDATA[ doctormobile = #doctormobile:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.patientname">
+                <![CDATA[ patientname = #patientname:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.patientbirth">
+                <![CDATA[ patientbirth = #patientbirth:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.patientgener">
+                <![CDATA[ patientgener = #patientgener:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.hisdiseaseids">
+                <![CDATA[ hisdiseaseids = #hisdiseaseids:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.hisdrugids">
+                <![CDATA[ hisdrugids = #hisdrugids:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.hisdrugtypes">
+                <![CDATA[ hisdrugtypes = #hisdrugtypes:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.hischeckids">
+                <![CDATA[ hischeckids = #hischeckids:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.examresult">
+                <![CDATA[ examresult = #examresult:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.orglist">
+                <![CDATA[ orglist = #orglist:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.referralflag">
+                <![CDATA[ referralflag = #referralflag:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.createtime">
+                <![CDATA[ createtime = #createtime:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除-->
+    <delete id="delete" parameterClass="fjzl_api_record">
+        <![CDATA[
+            delete from fjzl_api_record where id = #id#
+        ]]>
+    </delete>
+
+	<!--转诊率统计-->
+	
+    <select id="report_4_referralRate" parameterClass="PageParam" resultClass="java.util.HashMap">
+        <![CDATA[
+            SELECT referralFlag 'referralFlag',count(1) 'num' from fjzl_api_record a  
+        ]]>
+        <include refid="report_where"/>
+        <![CDATA[ GROUP BY referralFlag ]]>
+    </select>
+</sqlMap>

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="sys_org">
+
+    <typeAlias alias="sys_org" type="com.zhys.sys.domain.Org" />
+
+    <sql id="selectSql">
+        <![CDATA[
+            select a.*,b.su_name as 'so_creatorName',c.su_name as 'so_lastUpdatorName',d.su_name as 'so_revieworName' from(
+			select
+                a.so_id,
+                a.so_name,
+                a.so_parentid,
+                a.so_order,
+                a.so_code,
+                a.so_contact,
+                a.so_email,
+                a.so_post,
+                a.so_purview,
+                a.so_type,
+                a.so_symbol,
+                a.so_contactor,
+                a.so_province,
+                a.so_city,
+                a.so_area,
+                a.so_street,
+                a.so_longitude,
+                a.so_latitude,
+                a.so_xcoordinate,
+                a.so_ycoordinate,
+                a.so_address,
+                a.so_grade,
+                a.so_nature,
+                a.so_status,
+                a.so_leader_org_flag,
+                a.so_guide_org_flag,
+                a.so_enable,
+                a.so_create_time,
+                a.so_last_upd_time,
+                a.so_creator,
+                a.so_last_update_user,
+                a.so_review_time,
+                a.so_reviewor,
+                a.so_code2,
+                d.so_name as so_parentname,
+                (case when exists(select 1 from sys_org b where b.so_parentid=a.so_id) then '1' else '0' end) as so_child,
+                (case when exists(select 1 from sys_user c where c.so_id=a.so_id) then '1' else '0' end) as so_used
+            from sys_org a
+            left join sys_org d on d.so_id=a.so_parentid
+			) a left JOIN
+			sys_user b on a.so_creator = b.su_id
+			LEFT JOIN sys_user c on a.so_last_update_user = c.su_id
+			LEFT JOIN sys_user d on a.so_reviewor = d.su_id
+        ]]>
+    </sql>
+
+    <!--查询记录-->
+    <select id="query" parameterClass="sys_org" resultClass="sys_org">
+        <include refid="selectSql"/>
+        <!-- <isParameterPresent prepend="where">
+            <isEqual property="mode" compareValue="so_id"><![CDATA[ a.so_id = #so_id:VARCHAR# ]]></isEqual>
+            <isEqual property="mode" compareValue="so_code"><![CDATA[ a.so_code = #so_code:VARCHAR# ]]></isEqual>
+            <isEqual property="mode" compareValue="treeForEdit"><![CDATA[ a.so_id <> #so_id:VARCHAR# ]]></isEqual>
+        </isParameterPresent> -->
+        <dynamic prepend="where">
+        	<isNotEmpty prepend="and" property="so_type"><![CDATA[ a.so_type = #so_type:VARCHAR# ]]></isNotEmpty>
+        	<isNotEmpty prepend="and" property="so_id"><![CDATA[ a.so_id = #so_id:VARCHAR# ]]></isNotEmpty>
+        	<isNotEmpty prepend="and" property="so_code"><![CDATA[ a.so_code = #so_code:VARCHAR# ]]></isNotEmpty>
+        	<isNotEmpty prepend="and" property="so_code2"><![CDATA[ a.so_code2 like '$so_code2$%' ]]></isNotEmpty>
+        </dynamic>
+        <isParameterPresent prepend="order by">
+            <isNotEmpty property="order"><![CDATA[ $order$ ]]></isNotEmpty>
+        </isParameterPresent>
+    </select>
+    
+    <!--翻页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+<!--
+            <isNotEmpty prepend="and" property="so_id" open="(" close=")">
+                <![CDATA[ a.so_id=#so_id# or a.so_parentid=#so_id# ]]>
+            </isNotEmpty>
+-->
+			<isNotEmpty prepend="and" property="so_type">
+				<![CDATA[ a.so_type = #so_type# ]]>
+			</isNotEmpty>
+            <isNotEmpty prepend="and" property="so_name">
+                <![CDATA[ a.so_name like '%$so_name$%' ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="so_code">
+                <![CDATA[ a.so_code like '%$so_code$%' ]]>
+            </isNotEmpty>
+            <!-- <isNotEmpty prepend="and" property="so_code_parent">
+                <![CDATA[ a.so_code like '$so_code_parent$%' ]]>
+            </isNotEmpty> -->
+            <isNotEmpty prepend="and" property="so_code_parent">
+                <![CDATA[ a.so_code2 like '$so_code_parent$%' ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--翻页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Integer">
+        <![CDATA[  select count(*) from sys_org a]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--翻页列表-->
+    <select id="pageList" parameterClass="PageParam" resultClass="sys_org">
+        <![CDATA[ $head$ ]]>
+        <include refid="selectSql"/>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--插入-->
+    <insert id="create" parameterClass="sys_org">
+        <selectKey keyProperty="so_id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        <![CDATA[
+            insert into sys_org(
+                so_id,
+                so_name,
+                so_parentid,
+                so_order,
+                so_code,
+                so_contact,
+                so_email,
+                so_post,
+                so_purview,
+                so_type,
+                so_symbol,
+                so_contactor,
+                so_province,
+                so_city,
+                so_area,
+                so_street,
+                so_longitude,
+                so_latitude,
+                so_xcoordinate,
+                so_ycoordinate,
+                so_address,
+                so_grade,
+                so_nature,
+                so_status,
+                so_leader_org_flag,
+                so_guide_org_flag,
+                so_enable,
+                so_create_time,
+                so_last_upd_time,
+                so_creator,
+                so_last_update_user,
+                so_review_time,
+                so_reviewor,
+                so_code2
+            ) values (
+                #so_id:VARCHAR#,
+                #so_name:VARCHAR#,
+                #so_parentid:VARCHAR#,
+                #so_order:NUMERIC#,
+                #so_code:VARCHAR#,
+                #so_contact:VARCHAR#,
+                #so_email:VARCHAR#,
+                #so_post:VARCHAR#,
+                #so_purview:VARCHAR#,
+                #so_type:VARCHAR#,
+                #so_symbol:VARCHAR#,
+                #so_contactor:VARCHAR#,
+                #so_province:VARCHAR#,
+                #so_city:VARCHAR#,
+                #so_area:VARCHAR#,
+                #so_street:VARCHAR#,
+                #so_longitude:VARCHAR#,
+                #so_latitude:VARCHAR#,
+                #so_xcoordinate:VARCHAR#,
+                #so_ycoordinate:VARCHAR#,
+                #so_address:VARCHAR#,
+                #so_grade:VARCHAR#,
+                #so_nature:VARCHAR#,
+                #so_status:VARCHAR#,
+                #so_leader_org_flag:VARCHAR#,
+                #so_guide_org_flag:VARCHAR#,
+                #so_enable:VARCHAR#,
+                #so_create_time:TIMESTAMP#,
+                #so_last_upd_time:TIMESTAMP#,
+                #so_creator:VARCHAR#,
+                #so_last_update_user:VARCHAR#,
+                #so_review_time:TIMESTAMP#,
+                #so_reviewor:VARCHAR#,
+                #so_code2:VARCHAR#
+            )
+        ]]>
+    </insert>
+
+    <!--更新-->
+    <update id="update" parameterClass="sys_org">
+    <![CDATA[ update sys_org ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.so_name">
+                <![CDATA[ so_name=#so_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_parentid">
+                <![CDATA[ so_parentid=#so_parentid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_order">
+                <![CDATA[ so_order=#so_order:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_code">
+                <![CDATA[ so_code=#so_code:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_contact">
+                <![CDATA[ so_contact=#so_contact:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_email">
+                <![CDATA[ so_email=#so_email:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_post">
+                <![CDATA[ so_post=#so_post:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_purview">
+                <![CDATA[ so_purview=#so_purview:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_type">
+                <![CDATA[ so_type = #so_type:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_symbol">
+                <![CDATA[ so_symbol = #so_symbol:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_contactor">
+                <![CDATA[ so_contactor = #so_contactor:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_province">
+                <![CDATA[ so_province = #so_province:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_city">
+                <![CDATA[ so_city = #so_city:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_area">
+                <![CDATA[ so_area = #so_area:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_street">
+                <![CDATA[ so_street = #so_street:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_longitude">
+                <![CDATA[ so_longitude = #so_longitude:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_latitude">
+                <![CDATA[ so_latitude = #so_latitude:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_xcoordinate">
+                <![CDATA[ so_xcoordinate = #so_xcoordinate:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_ycoordinate">
+                <![CDATA[ so_ycoordinate = #so_ycoordinate:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_address">
+                <![CDATA[ so_address = #so_address:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_grade">
+                <![CDATA[ so_grade = #so_grade:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_nature">
+                <![CDATA[ so_nature = #so_nature:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_status">
+                <![CDATA[ so_status = #so_status:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_leader_org_flag">
+                <![CDATA[ so_leader_org_flag = #so_leader_org_flag:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_guide_org_flag">
+                <![CDATA[ so_guide_org_flag = #so_guide_org_flag:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_enable">
+                <![CDATA[ so_enable = #so_enable:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_create_time">
+                <![CDATA[ so_create_time = #so_create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_last_upd_time">
+                <![CDATA[ so_last_upd_time = #so_last_upd_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_creator">
+                <![CDATA[ so_creator = #so_creator:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_last_update_user">
+                <![CDATA[ so_last_update_user = #so_last_update_user:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_review_time">
+                <![CDATA[ so_review_time = #so_review_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_reviewor">
+                <![CDATA[ so_reviewor = #so_reviewor:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.so_code2">
+                <![CDATA[ so_code2 = #so_code2:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where so_id = #so_id:VARCHAR# ]]>
+    </update>
+
+    <!--删除-->
+    <delete id="delete" parameterClass="sys_org">
+    <![CDATA[
+        delete from sys_org where so_id=#so_id:VARCHAR#
+    ]]>
+    </delete>
+
+
+</sqlMap>
+       
+           

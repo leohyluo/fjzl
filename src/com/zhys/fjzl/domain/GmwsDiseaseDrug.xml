@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+智能导诊疾病药品关系表
+User: Created by auto build
+Date: 2017-07-31 16:30:02
+-->
+<sqlMap namespace="gmws_disease_drug">
+
+    <typeAlias alias="gmws_disease_drug" type="com.zhys.fjzl.domain.GmwsDiseaseDrug" />
+
+    <!--智能导诊疾病药品关系表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--智能导诊疾病id等于-->
+            <isNotEmpty prepend="and" property="gmws_disease_id">
+                <![CDATA[ gmws_disease_id = #gmws_disease_id# ]]>
+            </isNotEmpty>
+            <!--智能导诊疾病名称-->
+            <isNotEmpty prepend="and" property="gmws_disease_name">
+                <![CDATA[ instr(gmws_disease_name, #gmws_disease_name#) > 0 ]]>
+            </isNotEmpty>
+            <!--治疗原则疾病id等于-->
+            <isNotEmpty prepend="and" property="zlyz_disease_id">
+                <![CDATA[ zlyz_disease_id = #zlyz_disease_id# ]]>
+            </isNotEmpty>
+            <!--治疗原则疾病名称-->
+            <isNotEmpty prepend="and" property="zlyz_disease_name">
+                <![CDATA[ instr(zlyz_disease_name, #zlyz_disease_name#) > 0 ]]>
+            </isNotEmpty>
+            <!---->
+            <isNotEmpty prepend="and" property="zlyz_ypid">
+                <![CDATA[ instr(zlyz_ypid, #zlyz_ypid#) > 0 ]]>
+            </isNotEmpty>
+            <!---->
+            <isNotEmpty prepend="and" property="zlyz_drugcode">
+                <![CDATA[ instr(zlyz_drugcode, #zlyz_drugcode#) > 0 ]]>
+            </isNotEmpty>
+            <!--智能导诊药品编码-->
+            <isNotEmpty prepend="and" property="gmws_drug_code">
+                <![CDATA[ instr(gmws_drug_code, #gmws_drug_code#) > 0 ]]>
+            </isNotEmpty>
+            <!--智能导诊药品名称-->
+            <isNotEmpty prepend="and" property="gmws_drug_name">
+                <![CDATA[ instr(gmws_drug_name, #gmws_drug_name#) > 0 ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ gmws_disease_id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--智能导诊疾病药品关系表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from gmws_disease_drug
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--智能导诊疾病药品关系表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="gmws_disease_drug">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                gmws_disease_id,
+                gmws_disease_name,
+                zlyz_disease_id,
+                zlyz_disease_name,
+                zlyz_ypid,
+                zlyz_drugcode,
+                gmws_drug_code,
+                gmws_drug_name
+            from gmws_disease_drug
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+
+    <!--创建智能导诊疾病药品关系表-->
+    <insert id="create" parameterClass="gmws_disease_drug">
+        <![CDATA[
+            insert into gmws_disease_drug(
+                gmws_disease_id,
+                gmws_disease_name,
+                zlyz_disease_id,
+                zlyz_disease_name,
+                zlyz_ypid,
+                zlyz_drugcode,
+                gmws_drug_code,
+                gmws_drug_name
+            ) values (
+                #gmws_disease_id:NUMERIC#,
+                #gmws_disease_name:VARCHAR#,
+                #zlyz_disease_id:NUMERIC#,
+                #zlyz_disease_name:VARCHAR#,
+                #zlyz_ypid:VARCHAR#,
+                #zlyz_drugcode:VARCHAR#,
+                #gmws_drug_code:VARCHAR#,
+                #gmws_drug_name:VARCHAR#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="gmws_disease_id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as gmws_disease_id
+        </selectKey>
+    </insert>
+
+    <!--更新智能导诊疾病药品关系表-->
+    <update id="update" parameterClass="gmws_disease_drug">
+        <![CDATA[ update gmws_disease_drug ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.gmws_disease_id">
+                <![CDATA[ gmws_disease_id = #gmws_disease_id:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.gmws_disease_name">
+                <![CDATA[ gmws_disease_name = #gmws_disease_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.zlyz_disease_id">
+                <![CDATA[ zlyz_disease_id = #zlyz_disease_id:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.zlyz_disease_name">
+                <![CDATA[ zlyz_disease_name = #zlyz_disease_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.zlyz_ypid">
+                <![CDATA[ zlyz_ypid = #zlyz_ypid:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.zlyz_drugcode">
+                <![CDATA[ zlyz_drugcode = #zlyz_drugcode:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.gmws_drug_code">
+                <![CDATA[ gmws_drug_code = #gmws_drug_code:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.gmws_drug_name">
+                <![CDATA[ gmws_drug_name = #gmws_drug_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where gmws_disease_id = #gmws_disease_id#  ]]>
+    </update>
+
+    <!--删除智能导诊疾病药品关系表-->
+    <delete id="delete" parameterClass="gmws_disease_drug">
+        <![CDATA[
+            delete from gmws_disease_drug where gmws_disease_id = #gmws_disease_id#
+        ]]>
+    </delete>
+
+</sqlMap>

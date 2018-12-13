@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+药品对照表
+User: Created by auto build
+Date: 2016-12-17 16:46:25
+-->
+<sqlMap namespace="drug_mapper">
+
+    <typeAlias alias="drug_mapper" type="com.zhys.fjzl.domain.DrugMapper" />
+
+    <!--药品对照表分页条件-->
+    <sql id="pageWhere">
+        <dynamic prepend="where">
+            <!--主键，自增长最小值-->
+            <isNotEmpty prepend="and" property="id_min">
+                <![CDATA[ id >= #id_min# ]]>
+            </isNotEmpty>
+            <!--主键，自增长等于-->
+            <isNotEmpty prepend="and" property="id">
+                <![CDATA[ id = #id# ]]>
+            </isNotEmpty>
+               <isNotEmpty prepend="and" property="id_other">
+            	<![CDATA[ id != #id_other# ]]>
+            </isNotEmpty>
+            <!--主键，自增长最大值-->
+            <isNotEmpty prepend="and" property="id_max">
+                <![CDATA[ id <= #id_max# ]]>
+            </isNotEmpty>
+            <!--机构id-->
+            <isNotEmpty prepend="and" property="org_id">
+                <![CDATA[ org_id = #org_id# ]]>
+            </isNotEmpty>
+            <!--机构药品id-->
+            <isNotEmpty prepend="and" property="drug_id">
+                <![CDATA[ drug_id = #drug_id# ]]>
+            </isNotEmpty>
+            <!--机构药品编码-->
+            <isNotEmpty prepend="and" property="org_drug_code">
+                <![CDATA[ org_drug_code = #org_drug_code# ]]>
+            </isNotEmpty>
+            <!--机构药品名称-->
+            <isNotEmpty prepend="and" property="org_drug_name">
+                <![CDATA[ instr(org_drug_name, #org_drug_name#) > 0 ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="org_drug_name_eq">
+                <![CDATA[ org_drug_name = #org_drug_name_eq#  ]]>
+            </isNotEmpty>
+            <!--本位码-->
+            <isNotEmpty prepend="and" property="standard_code">
+                <![CDATA[ instr(standard_code, #standard_code#) > 0 ]]>
+            </isNotEmpty>
+            <!--批准文号-->
+            <isNotEmpty prepend="and" property="approval_code">
+                <![CDATA[ instr(approval_code, #approval_code#) > 0 ]]>
+            </isNotEmpty>
+            <!--规格-->
+            <isNotEmpty prepend="and" property="specifications">
+                <![CDATA[ instr(specifications, #specifications#) > 0 ]]>
+            </isNotEmpty>
+            <!--剂型-->
+            <isNotEmpty prepend="and" property="dosage_form">
+                <![CDATA[ instr(dosage_form, #dosage_form#) > 0 ]]>
+            </isNotEmpty>
+            <!--用法用量-->
+            <isNotEmpty prepend="and" property="drug_usage">
+                <![CDATA[ instr(drug_usage, #drug_usage#) > 0 ]]>
+            </isNotEmpty>
+            <!--单位-->
+            <isNotEmpty prepend="and" property="unit">
+                <![CDATA[ instr(unit, #unit#) > 0 ]]>
+            </isNotEmpty>
+            <!--药物组成-->
+            <isNotEmpty prepend="and" property="drug_composition">
+                <![CDATA[ instr(drug_composition, #drug_composition#) > 0 ]]>
+            </isNotEmpty>
+            <!--药物毒性-->
+            <isNotEmpty prepend="and" property="drug_toxicity">
+                <![CDATA[ instr(drug_toxicity, #drug_toxicity#) > 0 ]]>
+            </isNotEmpty>
+            <!--药性-->
+            <isNotEmpty prepend="and" property="resistance">
+                <![CDATA[ instr(resistance, #resistance#) > 0 ]]>
+            </isNotEmpty>
+            <!--化学成份-->
+            <isNotEmpty prepend="and" property="chemical_composition">
+                <![CDATA[ instr(chemical_composition, #chemical_composition#) > 0 ]]>
+            </isNotEmpty>
+            <!--状态，已对照/未对照/对照失败最小值-->
+            <isNotEmpty prepend="and" property="drug_status_min">
+                <![CDATA[ drug_status >= #drug_status_min# ]]>
+            </isNotEmpty>
+            <!--状态，已对照/未对照/对照失败等于-->
+            <isNotEmpty prepend="and" property="drug_status">
+                <![CDATA[ drug_status = #drug_status# ]]>
+            </isNotEmpty>
+            <!--状态，已对照/未对照/对照失败最大值-->
+            <isNotEmpty prepend="and" property="drug_status_max">
+                <![CDATA[ drug_status <= #drug_status_max# ]]>
+            </isNotEmpty>
+             <!--状态在某个区间-->
+            <isNotEmpty prepend="and" property="drug_status_in">
+                <![CDATA[ drug_status in ($drug_status_in$) ]]>
+            </isNotEmpty>
+            <!--药品等级最小值-->
+            <isNotEmpty prepend="and" property="grade_min">
+                <![CDATA[ grade >= #grade_min# ]]>
+            </isNotEmpty>
+            <!--药品等级等于-->
+            <isNotEmpty prepend="and" property="grade">
+                <![CDATA[ grade = #grade# ]]>
+            </isNotEmpty>
+            <!--药品等级最大值-->
+            <isNotEmpty prepend="and" property="grade_max">
+                <![CDATA[ grade <= #grade_max# ]]>
+            </isNotEmpty>
+            <!--药物类型(西药/中成药/中药饮片)最小值-->
+            <isNotEmpty prepend="and" property="type_min">
+                <![CDATA[ type >= #type_min# ]]>
+            </isNotEmpty>
+            <!--药物类型(西药/中成药/中药饮片)等于-->
+            <isNotEmpty prepend="and" property="type">
+                <![CDATA[ type = #type# ]]>
+            </isNotEmpty>
+            <!--药物类型(西药/中成药/中药饮片)最大值-->
+            <isNotEmpty prepend="and" property="type_max">
+                <![CDATA[ type <= #type_max# ]]>
+            </isNotEmpty>
+            
+            <!--是否启用等于-->
+            <isNotEmpty prepend="and" property="_enable">
+                <![CDATA[ dm._enable = #_enable# ]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="api_enable">
+                <![CDATA[ _enable = #api_enable# ]]>
+            </isNotEmpty>
+            <!--创建时间开始-->
+            <isNotEmpty prepend="and" property="create_time_begin">
+                <![CDATA[ create_time >= str_to_date(#create_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建时间结束-->
+            <isNotEmpty prepend="and" property="create_time_end">
+                <![CDATA[ create_time <= str_to_date('$create_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--创建者-->
+            <isNotEmpty prepend="and" property="creator">
+                <![CDATA[ instr(creator, #creator#) > 0 ]]>
+            </isNotEmpty>
+             <!--最后修改时间开始-->
+            <isNotEmpty prepend="and" property="last_update_time_begin">
+                <![CDATA[ last_update_time >= str_to_date(#last_update_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改时间结束-->
+            <isNotEmpty prepend="and" property="last_update_time_end">
+                <![CDATA[ last_update_time <= str_to_date('$last_update_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--最后修改人最小值-->
+            <isNotEmpty prepend="and" property="last_updateor_min">
+                <![CDATA[ last_updateor >= #last_updateor_min# ]]>
+            </isNotEmpty>
+            <!--最后修改人等于-->
+            <isNotEmpty prepend="and" property="last_updateor">
+                <![CDATA[ last_updateor = #last_updateor# ]]>
+            </isNotEmpty>
+            <!--最后修改人最大值-->
+            <isNotEmpty prepend="and" property="last_updateor_max">
+                <![CDATA[ last_updateor <= #last_updateor_max# ]]>
+            </isNotEmpty>
+            <!--审核时间开始-->
+            <isNotEmpty prepend="and" property="review_time_begin">
+                <![CDATA[ review_time >= str_to_date(#review_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核时间结束-->
+            <isNotEmpty prepend="and" property="review_time_end">
+                <![CDATA[ review_time <= str_to_date('$review_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--审核者-->
+            <isNotEmpty prepend="and" property="reviewor">
+                <![CDATA[ instr(reviewor, #reviewor#) > 0 ]]>
+            </isNotEmpty>
+            <!--对照时间开始-->
+            <isNotEmpty prepend="and" property="mapper_time_begin">
+                <![CDATA[ mapper_time >= str_to_date(#mapper_time_begin#,'%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--对照时间结束-->
+            <isNotEmpty prepend="and" property="mapper_time_end">
+                <![CDATA[ mapper_time <= str_to_date('$mapper_time_end$ 23:59:59','%Y-%m-%d %T') ]]>
+            </isNotEmpty>
+            <!--对照者-->
+            <isNotEmpty prepend="and" property="mapper_user">
+                <![CDATA[ instr(mapper_user, #mapper_user#) > 0 ]]>
+            </isNotEmpty>
+            <!--导入批号-->
+            <isNotEmpty prepend="and" property="import_no">
+                <![CDATA[ instr(import_no, #import_no#) > 0 ]]>
+            </isNotEmpty>
+            <!-- 用于数据导出 -->
+            <isNotEmpty prepend="and" property="exportIds">
+                <![CDATA[ id in ($exportIds$) ]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <!--药品对照表分页记录数-->
+    <select id="pageCount" parameterClass="PageParam" resultClass="Long">
+        <![CDATA[
+            select count(*) total from drug_mapper dm
+        ]]>
+        <include refid="pageWhere"/>
+    </select>
+
+    <!--药品对照表分页记录集-->
+    <select id="pageList" parameterClass="PageParam" resultClass="drug_mapper">
+        <![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                org_id,
+                o.so_name as orgName,
+                drug_id,
+                org_drug_code,
+                org_drug_name,
+                standard_code,
+                approval_code,
+                specifications,
+                dosage_form,
+                drug_usage,
+                unit,
+                drug_composition,
+                drug_toxicity,
+                resistance,
+                chemical_composition,
+                drug_status,
+                grade,
+                type,
+                _enable,
+                create_time,
+                 b.su_name as creatorName,
+                last_update_time,
+                 c.su_name as last_updatorName,
+                review_time,
+                 d.su_name as revieworName,
+                mapper_time,
+                mapper_user,
+                import_no
+            from drug_mapper as dm left JOIN
+			sys_user b on dm.creator = b.su_id
+			LEFT JOIN sys_user c on dm.last_updateor = c.su_id
+			LEFT JOIN sys_user d on dm.reviewor = d.su_id
+			LEFT JOIN sys_org o on dm.org_id=o.so_id
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+    
+    <select id="queryAll" parameterClass="PageParam" resultClass="drug_mapper">
+    	<![CDATA[ $head$ ]]>
+        <![CDATA[
+            select
+                id,
+                org_id,
+                '' as orgName,
+                drug_id,
+                org_drug_code,
+                org_drug_name,
+                standard_code,
+                approval_code,
+                specifications,
+                dosage_form,
+                drug_usage,
+                unit,
+                drug_composition,
+                drug_toxicity,
+                resistance,
+                chemical_composition,
+                drug_status,
+                grade,
+                type,
+                _enable,
+                create_time,
+                '' as creatorName,
+                last_update_time,
+                '' as last_updatorName,
+                review_time,
+                '' as revieworName,
+                mapper_time,
+                mapper_user,
+                import_no
+            from drug_mapper
+        ]]>
+        <include refid="pageWhere"/>
+        <![CDATA[ $sortOrder$ ]]>
+        <![CDATA[ $foot$ ]]>
+    </select>
+    
+    <!--药品对照表分页记录集-->
+    <sql id="selectSql2">
+        <![CDATA[
+            select
+                dm.id,
+                dm.org_id,
+                o.so_name as orgName,
+                dm.drug_id,
+                dm.org_drug_code,
+                dm.org_drug_name,
+                dm.standard_code,
+                dm.approval_code,
+                dm.specifications,
+                dm.dosage_form,
+                dm.drug_usage,
+                dm.unit,
+                dm.drug_composition,
+                dm.drug_toxicity,
+                dm.resistance,
+                dm.chemical_composition,
+                dm.drug_status,
+                dm.type,
+                dm._enable,
+                dm.create_time,
+                b.su_name as creatorName,
+                dm.last_update_time,
+                c.su_name as last_updatorName,
+                dm.review_time,
+                d.su_name as revieworName,
+                dm.mapper_time,
+                dm.mapper_user,
+                dm.memo,
+                dm.import_no
+        ]]>
+    </sql>
+    
+    <select id="pageList2" parameterClass="PageParam" resultClass="drug_mapper">
+    	<include refid="selectSql2"/>
+    	<isParameterPresent>
+    		<isNotNull property="type">
+	    		<isEqual property="type" compareValue="1">
+	    			<isEqual property="reviewFlag" compareValue="1">
+	    				<![CDATA[
+						,
+						t1.drug_name as ebmDrugName,
+						t1.dosage_form as ebmDosageForm,
+						t1.grade as grade
+						from drug_mapper as dm
+						left join ebm_western_medicine t1 on dm.drug_id = t1.drug_code
+						]]>
+	    			</isEqual>
+					<isEqual property="reviewFlag" compareValue="0">
+	    				<![CDATA[
+	    				,
+						'' as ebmDrugName,
+						'' as ebmDosageForm,
+						'' as grade
+						from drug_mapper as dm
+						]]>
+	    			</isEqual>   		
+	    		</isEqual>
+	    		<isEqual property="type" compareValue="2">
+	    			<isEqual property="reviewFlag" compareValue="1">
+						<![CDATA[
+						,
+						t2.cpdrugname as ebmDrugName,
+						t2.standard as ebmDosageForm,
+						t2.grade as grade
+						from drug_mapper as dm
+						left join  ebm_b_cpdrug t2 on dm.drug_id = t2.drug_code
+						]]>    		
+	    			</isEqual>
+	    			<isEqual property="reviewFlag" compareValue="0">
+	    				,
+						'' as ebmDrugName,
+						'' as ebmDosageForm,
+						'' as grade
+	    				from drug_mapper as dm
+	    			</isEqual>
+	    		</isEqual>
+	    		<isEqual property="type" compareValue="3">
+	    			<isEqual property="reviewFlag" compareValue="1">
+						<![CDATA[
+						,
+						t3.name_ as ebmDrugName,
+						'' as ebmDosageForm,
+						t3.grade as grade
+						from drug_mapper as dm
+						left join  ebm_b_chdrug t3 on dm.drug_id = t3.drug_code
+						]]>    		
+	    			</isEqual>
+	    			<isEqual property="reviewFlag" compareValue="0">
+	    				,
+						'' as ebmDrugName,
+						'' as ebmDosageForm,
+						'' as grade
+	    				from drug_mapper as dm
+	    			</isEqual>
+	    		</isEqual>
+    		</isNotNull>
+    		<isNull property="type">
+    			<![CDATA[
+	    			,
+					'' as ebmDrugName,
+					'' as ebmDosageForm,
+						'' as grade
+	    			from drug_mapper as dm
+	    		]]>
+    		</isNull>
+    		<![CDATA[
+    			left JOIN
+				sys_user b on dm.creator = b.su_id
+				LEFT JOIN sys_user c on dm.last_updateor = c.su_id
+				LEFT JOIN sys_user d on dm.reviewor = d.su_id
+				LEFT JOIN sys_org o on dm.org_id=o.so_id
+    		]]>
+    		<include refid="pageWhere"/>
+	        <![CDATA[ $sortOrder$ ]]>
+	        <![CDATA[ $foot$ ]]>
+    	</isParameterPresent>
+    </select>
+
+    <!--创建药品对照表-->
+    <insert id="create" parameterClass="drug_mapper">
+        <![CDATA[
+            insert into drug_mapper(
+                org_id,
+                drug_id,
+                org_drug_code,
+                org_drug_name,
+                standard_code,
+                approval_code,
+                specifications,
+                dosage_form,
+                drug_usage,
+                unit,
+                drug_composition,
+                drug_toxicity,
+                resistance,
+                chemical_composition,
+                drug_status,
+                type,
+                _enable,
+                create_time,
+                creator,
+                last_update_time,
+                last_updateor,
+                review_time,
+                reviewor,
+                mapper_time,
+                mapper_user,
+                memo,
+                import_no
+            ) values (
+                #org_id:VARCHAR#,
+                #drug_id:VARCHAR#,
+                #org_drug_code:VARCHAR#,
+                #org_drug_name:VARCHAR#,
+                #standard_code:VARCHAR#,
+                #approval_code:VARCHAR#,
+                #specifications:VARCHAR#,
+                #dosage_form:VARCHAR#,
+                #drug_usage:VARCHAR#,
+                #unit:VARCHAR#,
+                #drug_composition:VARCHAR#,
+                #drug_toxicity:VARCHAR#,
+                #resistance:VARCHAR#,
+                #chemical_composition:VARCHAR#,
+                #drug_status:NUMERIC#,
+                #type:NUMERIC#,
+                #_enable:NUMERIC#,
+                #create_time:TIMESTAMP#,
+                #creator:NUMERIC#,
+                #last_update_time:TIMESTAMP#,
+                #last_updateor:NUMERIC#,
+                #review_time:TIMESTAMP#,
+                #reviewor:NUMERIC#,
+                #mapper_time:TIMESTAMP#,
+                #mapper_user:VARCHAR#,
+                #memo:VARCHAR#,
+                #import_no:VARCHAR#
+            )
+        ]]>
+        <!--
+        <selectKey keyProperty="id" resultClass="String" type="pre">
+            <include refid="common.pkSql"/>
+        </selectKey>
+        -->
+        <selectKey resultClass="int" >
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <!--更新药品对照表-->
+    <update id="update" parameterClass="drug_mapper">
+        <![CDATA[ update drug_mapper ]]>
+        <dynamic prepend="set">
+            <isPropertyAvailable prepend="," property="fields.org_id">
+                <![CDATA[ org_id = #org_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.drug_id">
+                <![CDATA[ drug_id = #drug_id:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_drug_code">
+                <![CDATA[ org_drug_code = #org_drug_code:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.org_drug_name">
+                <![CDATA[ org_drug_name = #org_drug_name:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.standard_code">
+                <![CDATA[ standard_code = #standard_code:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.approval_code">
+                <![CDATA[ approval_code = #approval_code:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.specifications">
+                <![CDATA[ specifications = #specifications:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.dosage_form">
+                <![CDATA[ dosage_form = #dosage_form:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.drug_usage">
+                <![CDATA[ drug_usage = #drug_usage:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.unit">
+                <![CDATA[ unit = #unit:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.drug_composition">
+                <![CDATA[ drug_composition = #drug_composition:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.drug_toxicity">
+                <![CDATA[ drug_toxicity = #drug_toxicity:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.resistance">
+                <![CDATA[ resistance = #resistance:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.chemical_composition">
+                <![CDATA[ chemical_composition = #chemical_composition:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.drug_status">
+                <![CDATA[ drug_status = #drug_status:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.type">
+                <![CDATA[ type = #type:NUMERIC# ]]>
+            </isPropertyAvailable>
+          <isPropertyAvailable prepend="," property="fields._enable">
+                <![CDATA[ _enable = #_enable:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.create_time">
+                <![CDATA[ create_time = #create_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.creator">
+                <![CDATA[ creator = #creator:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_update_time">
+                <![CDATA[ last_update_time = #last_update_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.last_updateor">
+                <![CDATA[ last_updateor = #last_updateor:NUMERIC# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.review_time">
+                <![CDATA[ review_time = #review_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.reviewor">
+                <![CDATA[ reviewor = #reviewor:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.mapper_time">
+                <![CDATA[ mapper_time = #mapper_time:TIMESTAMP# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.mapper_user">
+                <![CDATA[ mapper_user = #mapper_user:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.import_no">
+                <![CDATA[ import_no = #import_no:VARCHAR# ]]>
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="," property="fields.memo">
+                <![CDATA[ memo = #memo:VARCHAR# ]]>
+            </isPropertyAvailable>
+        </dynamic>
+        <![CDATA[ where id = #id#  ]]>
+    </update>
+
+    <!--删除药品对照表-->
+    <delete id="delete" parameterClass="drug_mapper">
+        <![CDATA[
+            delete from drug_mapper where id = #id#
+        ]]>
+    </delete>
+	<!-- 储存过程对照西药 -->
+	<parameterMap class="map" id="xySwapParam">    
+	    <parameter property="orgId"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>
+	    <parameter property="importNo"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>    
+	    <parameter property="result"  javaType="java.lang.Integer" jdbcType="int" mode="OUT"/>    
+	</parameterMap>
+	<procedure id="xyAutoMatch" parameterMap="xySwapParam">
+		 <![CDATA[
+           CALL xy_mapper(?,?,?)
+        ]]>
+	</procedure>
+	<!-- 储存过程对照中成药 -->
+	<parameterMap class="map" id="zcySwapParam">    
+	    <parameter property="orgId"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>
+	    <parameter property="importNo"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>    
+	    <parameter property="result"  javaType="java.lang.Integer" jdbcType="int" mode="OUT"/>    
+	</parameterMap>
+	<procedure id="zcyAutoMatch" parameterMap="zcySwapParam">
+		 <![CDATA[
+           CALL zcy_mapper(?,?,?)
+        ]]>
+	</procedure>
+	<!-- 储存过程对照中药饮片 -->
+	<parameterMap class="map" id="zyypSwapParam">    
+	    <parameter property="orgId"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>
+	    <parameter property="importNo"  javaType="java.lang.String" jdbcType="varchar" mode="IN"/>    
+	    <parameter property="result"  javaType="java.lang.Integer" jdbcType="int" mode="OUT"/>    
+	</parameterMap>
+	<procedure id="zyypAutoMatch" parameterMap="zyypSwapParam">
+		 <![CDATA[
+           CALL zyyp_mapper(?,?,?)
+        ]]>
+	</procedure>
+</sqlMap>

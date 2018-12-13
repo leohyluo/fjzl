@@ -1,0 +1,35 @@
+
+-- 检查对照储存过程
+drop PROCEDURE if exists bodyCheck_mapper;
+create procedure bodyCheck_mapper(
+	in orgId varchar(20),
+  in importNo varchar(64),
+  out effectRows int
+)
+	BEGIN
+		DECLARE _error INT DEFAULT 0;
+		DECLARE done INT DEFAULT FALSE;
+		declare ebm_check_id varchar(20) default null;
+		declare _id varchar(20) default null;
+		declare _org_check_name varchar(20) default null;
+		-- 根据导入批号找出未对照的检查
+		declare cursor1 cursor for select id,org_check_name from body_check_mapper where 1 = 1 and (body_check_status = 0 or body_check_status is null) and org_id = orgId and import_no = importNo;
+		
+		DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET _error=1;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;			
+
+		open cursor1;
+			loop1:loop
+				fetch cursor1 into _id,_org_check_name;
+				-- 根据His检查名称去匹配知识库的检查
+				select id into ebm_check_id from ebm_body_check where name = _org_check_name limit 0,1;				
+				if ebm_check_id is not null THEN
+					update body_check_mapper set body_check_status = 1,check_id=ebm_check_id,mapper_time=now() where id=_id;
+					set effectRows = effectRows + 1;
+				end if;
+				if done then
+					leave loop1;
+				end if;
+			end loop;
+		close cursor1;
+	END
